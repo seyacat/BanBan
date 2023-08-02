@@ -1,0 +1,3 @@
+[submodule "modules/TwitchChatGodot"]
+	path = modules/TwitchChatGodot
+	url = git@github.com:seyacat/TwitchChatGodot.git
