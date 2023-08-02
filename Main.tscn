@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ju25yuo2cpqa"]
+
+[ext_resource type="Script" path="res://Websocket.gd" id="1_e17ca"]
+[ext_resource type="Script" path="res://JlintMachine.cs" id="2_xs1ug"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Websocket" type="Node" parent="."]
+script = ExtResource("1_e17ca")
+
+[node name="Player" type="Sprite2D" parent="."]
+script = ExtResource("2_xs1ug")
