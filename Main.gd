@@ -8,8 +8,8 @@ func _ready():
 	$TwitchChatGodot.connect("new_message",get_message)
 
 func _update_settings():
-	Settings.maxdx = $Panel/VBoxContainer/HBoxContainer2/maxDx.value;
-	Settings.maxdy = $Panel/VBoxContainer/HBoxContainer3/maxDy.value;	
+	Settings.maxa = $Panel/VBoxContainer/HBoxContainer3/maxA.value;
+	Settings.maxv = $Panel/VBoxContainer/HBoxContainer2/maxV.value;	
 
 func get_message(data):
 	_update_settings()

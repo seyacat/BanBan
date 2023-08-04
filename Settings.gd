@@ -1,5 +1,5 @@
 extends Node
 
-var maxdx = 1.5
-var maxdy = 0.4
+var maxv = 1 #VELOCIDAD
+var maxa = 0.1 #ACELERACION
 
