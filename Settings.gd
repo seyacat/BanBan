@@ -1,5 +1,11 @@
 extends Node
 
-var maxv = 1 #VELOCIDAD
-var maxa = 0.1 #ACELERACION
+var data={
+ "mass" = 1, #MASA
+ "maxv" = 100, #VELOCIDAD
+ "maxa" = 100, #ACELERACION
+ "maxav" = 100, #VELOCIDAD ANGULAR
+ "maxaa" = 100, #ACELERACION ANGULAR
+}
+
 

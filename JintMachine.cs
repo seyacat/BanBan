@@ -21,7 +21,7 @@ public partial class JintMachine : Node
             //options.LimitMemory(4_000_000);
 
             // Set a timeout to 4 seconds.
-            options.TimeoutInterval(TimeSpan.FromSeconds(0.1));
+            //options.TimeoutInterval(TimeSpan.FromSeconds(0.1));
 
             // Set limit of 1000 executed statements.
             //options.MaxStatements(10);
@@ -31,19 +31,22 @@ public partial class JintMachine : Node
         });
         JsValue[] zero = new JsValue[] { 0, 0 };
         machine.SetValue("log", new Action<string>((x) => GD.Print(x)));
-        machine.SetValue("acel", 1.5);
         try
         {
             machine.Execute(
                 @"
 			let context = {}
+			const process = {}
 			const parseContext = () => {
 				context = JSON.parse(jsonContext)
 			}
-			let process = async (ctx) => {
-				//log(JSON.stringify(ctx))
-				//dx = dx + 1
-				//dy = dy + 1.1
+			const run_process = (ctx) => {
+				for( const p of Object.entries(process) ){
+					const f = p[1]
+					if( typeof f === 'function' ){
+						f(context);
+					}
+				}
 			}
 			"
             );
@@ -67,9 +70,8 @@ public partial class JintMachine : Node
         }
         try
         {
-            GD.Print("running");
             running = true;
-            await Task.Delay(2000);
+            //await Task.Delay(2000);
             double startTime = Time.GetTicksUsec();
 
             machine.SetValue("jsonContext", context);
@@ -77,7 +79,7 @@ public partial class JintMachine : Node
             machine.Execute(
                 @"
 							parseContext();
-							process(context); 
+							run_process(context);
 							"
             );
 
@@ -99,6 +101,10 @@ public partial class JintMachine : Node
         {
             foreach (JsValue v in jsOb.AsArray())
             {
+                if (v.AsNumber() == double.NaN)
+                {
+                    return ret;
+                }
                 ret.Add(v.AsNumber());
             }
         }
@@ -113,10 +119,6 @@ public partial class JintMachine : Node
             return jsOb.AsNumber();
         }
         return Double.NaN;
-        /*var list = new System.Collections.Generic.List<double>();
-        list.Add(acel[0].AsNumber());
-        list.Add(acel[1].AsNumber());
-        return new Godot.Collections.Array<double>(list);*/
     }
 
     public async void ExecMessage(string msg)

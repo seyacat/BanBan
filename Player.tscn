@@ -107,11 +107,11 @@ visible = false
 scale = Vector2(0.234375, 0.234375)
 texture = ExtResource("2_15725")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="HumanSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_absvh")
 animation = &"idle"
-frame_progress = 0.989588
+frame_progress = 0.827482
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="HumanShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_e4oco")

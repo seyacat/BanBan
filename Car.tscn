@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://uxps1i6yeeqh"]
+
+[ext_resource type="Script" path="res://Car.gd" id="1_i8p15"]
+[ext_resource type="Script" path="res://JintMachine.cs" id="2_8eoyd"]
+[ext_resource type="Texture2D" uid="uid://i71yg6ttodhb" path="res://sprites/Car/f1.png" id="4_iaci6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o7cl6"]
+size = Vector2(24, 52)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d3v46"]
+atlas = ExtResource("4_iaci6")
+region = Rect2(0, 0, 10, 19)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jqnx5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d3v46")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Car" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource("1_i8p15")
+
+[node name="JintMachine" type="Node" parent="."]
+script = ExtResource("2_8eoyd")
+
+[node name="CarShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_o7cl6")
+
+[node name="CarSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(0.384314, 0.0666667, 1, 1)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_jqnx5")
+
+[node name="LabelContainer" type="Node2D" parent="."]
+rotation = 4.71239
+scale = Vector2(0.75, 0.75)
+
+[node name="Label" type="Label" parent="LabelContainer"]
+offset_left = -35.0
+offset_top = -39.0
+offset_right = 35.0
+offset_bottom = -13.0
+text = "Anonimous"
+clip_text = true

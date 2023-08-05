@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://bnitlfmxx2yu3"]
+
+[ext_resource type="Script" path="res://Circle.gd" id="1_vjtji"]
+[ext_resource type="Script" path="res://Checkpoint.gd" id="1_xm5un"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ug13w"]
+radius = 45.0
+
+[node name="Checkpoint" type="Node2D"]
+script = ExtResource("1_xm5un")
+
+[node name="Circle" type="Sprite2D" parent="."]
+script = ExtResource("1_vjtji")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ug13w")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -20.0
+offset_top = -12.0
+offset_right = 20.0
+offset_bottom = 11.0
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
