@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfq7hplj1nipg"]
+
+[ext_resource type="Script" path="res://Menu.gd" id="1_iaa8j"]
+[ext_resource type="Texture2D" uid="uid://dy0mopq6r2bhb" path="res://blends/f1.png" id="2_unuh8"]
+
+[node name="Menu" type="Node2D"]
+script = ExtResource("1_iaa8j")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(561, 429)
+scale = Vector2(1.869, 1.87409)
+texture = ExtResource("2_unuh8")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 48.0
+offset_top = 18.0
+offset_right = 121.0
+offset_bottom = 44.0
+scale = Vector2(14.5999, 14.6396)
+text = "BAN-BAN"
+
+[node name="Button" type="Button" parent="."]
+offset_left = 465.0
+offset_top = 400.0
+offset_right = 521.0
+offset_bottom = 431.0
+scale = Vector2(4.23529, 4.23529)
+text = "START"
+
+[connection signal="pressed" from="Button" to="." method="_start_game"]

@@ -36,17 +36,8 @@ public partial class JintMachine : Node
             machine.Execute(
                 @"
 			let context = {}
-			const process = {}
 			const parseContext = () => {
 				context = JSON.parse(jsonContext)
-			}
-			const run_process = (ctx) => {
-				for( const p of Object.entries(process) ){
-					const f = p[1]
-					if( typeof f === 'function' ){
-						f(context);
-					}
-				}
 			}
 			"
             );
@@ -78,9 +69,11 @@ public partial class JintMachine : Node
 
             machine.Execute(
                 @"
-							parseContext();
-							run_process(context);
-							"
+				parseContext();
+				if( typeof update === 'function' ){
+						update(context);
+					}
+				"
             );
 
             double elapsed = Time.GetTicksUsec() - startTime;

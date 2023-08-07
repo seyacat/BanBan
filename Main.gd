@@ -32,15 +32,16 @@ func get_message(data):
 		var playernode = get_node_or_null("Players/"+data['user-id']);
 		print(playernode)
 		print(data['user-id'])
-		if !playernode:
+		if !playernode && data.msg == "!join":
 			#playernode = playerBase.instantiate()
 			playernode = carBase.instantiate()
 			playernode.name = data['user-id']
 			$Players.add_child(playernode)
-			playernode.position = Vector2(-400+20*($Players.get_child_count()% 80) , 200);
-		if( data.has("msg") ):
-			if( data.msg.left(1) == '!'  ):
-				playernode._process_message_data(data)
+			playernode.position = $Respawn.position + Vector2(30*($Players.get_child_count() % 20),0);
+			data.msg = '!'
+		
+		if( data.has("msg") && data.msg.left(1) == '!' ):
+			playernode._process_message_data(data)
 			
 func _save_settings():
 	_update_settings_from_ui()

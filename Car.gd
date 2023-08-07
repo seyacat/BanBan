@@ -15,8 +15,8 @@ func _physics_process(delta):
 	acela = acela if !is_nan(acela) else 0
 	if !is_nan(acel) && !is_nan(acela):
 		var veli = linear_velocity.length();
-		var velf = veli+acel;
-		if velf < veli || velf < Settings.data.maxv:
+		var velf = (linear_velocity + (-global_transform.y) * acel).length()
+		if abs(velf) < abs(veli) || abs(velf) < Settings.data.maxv:
 			linear_velocity = linear_velocity + (-global_transform.y) * acel
 			linear_velocity = linear_velocity - linear_velocity.project(global_transform.x)
 		var abs_vela = abs(angular_velocity + acela)
