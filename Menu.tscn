@@ -1,10 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dfq7hplj1nipg"]
+[gd_scene load_steps=3 format=3 uid="uid://cx1ke11xqxdav"]
 
-[ext_resource type="Script" path="res://Menu.gd" id="1_iaa8j"]
+[ext_resource type="Script" path="res://scripts/Menu.gd" id="1_g88tp"]
 [ext_resource type="Texture2D" uid="uid://dy0mopq6r2bhb" path="res://blends/f1.png" id="2_unuh8"]
 
 [node name="Menu" type="Node2D"]
-script = ExtResource("1_iaa8j")
+script = ExtResource("1_g88tp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(561, 429)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://uxps1i6yeeqh"]
 
-[ext_resource type="Script" path="res://Car.gd" id="1_i8p15"]
+[ext_resource type="Script" path="res://scripts/Car.gd" id="1_64vwq"]
 [ext_resource type="Script" path="res://JintMachine.cs" id="2_8eoyd"]
 [ext_resource type="Texture2D" uid="uid://i71yg6ttodhb" path="res://sprites/Car/f1.png" id="4_iaci6"]
 
@@ -24,7 +24,7 @@ animations = [{
 
 [node name="Car" type="RigidBody2D"]
 gravity_scale = 0.0
-script = ExtResource("1_i8p15")
+script = ExtResource("1_64vwq")
 
 [node name="JintMachine" type="Node" parent="."]
 script = ExtResource("2_8eoyd")

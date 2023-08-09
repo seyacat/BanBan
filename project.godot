@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="Mini Game"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://levels/Level1.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Settings="*res://Settings.gd"
+GameData="*res://GameData.gd"
 
 [dotnet]
 

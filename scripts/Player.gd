@@ -14,14 +14,14 @@ func _physics_process(delta):
 		$AnimatedSprite2D.flip_h = acelArray[0] < 0
 		var acel = Vector2(acelArray[0],acelArray[1])
 		var amagnitude = acel.length();
-		if( amagnitude > Settings.maxa/100.0 ):
+		if( amagnitude > GameData.maxa/100.0 ):
 			var anormal = acel.normalized();
-			acel = anormal * Settings.maxa/100.0;
+			acel = anormal * GameData.maxa/100.0;
 		vel = vel + acel
 		var vmagnitude = vel.length()
-		if( vmagnitude > Settings.maxv/100.0 ):
+		if( vmagnitude > GameData.maxv/100.0 ):
 			var vnormal = acel.normalized();
-			vel = vnormal * Settings.maxv/100.0;
+			vel = vnormal * GameData.maxv/100.0;
 		move_and_collide(vel)
 		print(amagnitude)
 		#print(vel)

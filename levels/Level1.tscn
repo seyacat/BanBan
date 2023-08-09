@@ -1,16 +1,17 @@
-[gd_scene load_steps=10 format=3 uid="uid://ju25yuo2cpqa"]
+[gd_scene load_steps=11 format=3 uid="uid://ju25yuo2cpqa"]
 
-[ext_resource type="Script" path="res://Main.gd" id="1_dapjl"]
-[ext_resource type="Script" path="res://modules/TwitchChatGodot/TwitchChatGodot.gd" id="3_h2hiw"]
-[ext_resource type="Texture2D" uid="uid://bjc1f3jpfo1o8" path="res://sprites/Environment/Vikings_tilemaps_001.bmp" id="3_kr0sj"]
-[ext_resource type="PackedScene" uid="uid://bnitlfmxx2yu3" path="res://Checkpoint.tscn" id="4_660m8"]
-[ext_resource type="Texture2D" uid="uid://cbbil6kamaaeo" path="res://sprites/piskel/meta.png" id="5_7wyd1"]
+[ext_resource type="Script" path="res://scripts/Level1.gd" id="1_uxeoc"]
+[ext_resource type="Script" path="res://modules/TwitchChatGodot/TwitchChatGodot.gd" id="2_h2rcl"]
+[ext_resource type="Texture2D" uid="uid://bjc1f3jpfo1o8" path="res://sprites/Environment/Vikings_tilemaps_001.bmp" id="3_6iej8"]
+[ext_resource type="PackedScene" uid="uid://bnitlfmxx2yu3" path="res://Checkpoint.tscn" id="4_jjqp1"]
+[ext_resource type="Texture2D" uid="uid://cbbil6kamaaeo" path="res://sprites/piskel/meta.png" id="5_83bw0"]
+[ext_resource type="PackedScene" uid="uid://dgi4oelyblvfu" path="res://CountDown.tscn" id="6_34025"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pirx2"]
 friction = 0.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_er2o0"]
-texture = ExtResource("3_kr0sj")
+texture = ExtResource("3_6iej8")
 texture_region_size = Vector2i(20, 20)
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -505,11 +506,11 @@ sources/1 = SubResource("TileSetAtlasSource_er2o0")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_701jg"]
 size = Vector2(413, 49)
 
-[node name="Main" type="Node2D"]
-script = ExtResource("1_dapjl")
+[node name="Level1" type="Node2D"]
+script = ExtResource("1_uxeoc")
 
 [node name="TwitchChatGodot" type="Node" parent="."]
-script = ExtResource("3_h2hiw")
+script = ExtResource("2_h2rcl")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="TwitchChatGodot"]
 
@@ -517,94 +518,94 @@ script = ExtResource("3_h2hiw")
 
 [node name="Players" type="Node" parent="."]
 
-[node name="Panel" type="Panel" parent="."]
+[node name="PanelSettings" type="Panel" parent="."]
 offset_left = 342.0
 offset_top = -321.0
 offset_right = 576.0
 offset_bottom = 322.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelSettings"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 13.0
 offset_right = 221.0
 offset_bottom = 580.0
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+[node name="Label" type="Label" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "RULES"
 horizontal_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="PanelSettings/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "*Velocity"
 
-[node name="maxV" type="SpinBox" parent="Panel/VBoxContainer/HBoxContainer2"]
+[node name="maxV" type="SpinBox" parent="PanelSettings/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 value = 50.0
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="PanelSettings/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "*Aceleration"
 
-[node name="maxA" type="SpinBox" parent="Panel/VBoxContainer/HBoxContainer3"]
+[node name="maxA" type="SpinBox" parent="PanelSettings/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 value = 50.0
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="PanelSettings/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "*Angular Vel"
 
-[node name="maxAV" type="SpinBox" parent="Panel/VBoxContainer/HBoxContainer4"]
+[node name="maxAV" type="SpinBox" parent="PanelSettings/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 value = 50.0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="PanelSettings/VBoxContainer/HBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "*Angular Acel"
 
-[node name="maxAA" type="SpinBox" parent="Panel/VBoxContainer/HBoxContainer5"]
+[node name="maxAA" type="SpinBox" parent="PanelSettings/VBoxContainer/HBoxContainer5"]
 layout_mode = 2
 value = 50.0
 
-[node name="Label2" type="Label" parent="Panel/VBoxContainer"]
+[node name="Label2" type="Label" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "*maximun"
 
-[node name="BtnLoad" type="Button" parent="Panel/VBoxContainer"]
+[node name="BtnLoad" type="Button" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Load"
 
-[node name="BtnSave" type="Button" parent="Panel/VBoxContainer"]
+[node name="BtnSave" type="Button" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Save"
 
-[node name="BtnReset" type="Button" parent="Panel/VBoxContainer"]
+[node name="BtnReset" type="Button" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Reset"
 
-[node name="BtnConnect" type="Button" parent="Panel/VBoxContainer"]
+[node name="BtnConnect" type="Button" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 text = "Connect"
 
@@ -616,16 +617,16 @@ layer_0/tile_data = PackedInt32Array(-983069, 262145, 3, -983068, 196609, 4, -98
 [node name="Node" type="Node2D" parent="."]
 visible = false
 
-[node name="Checkpoint" parent="Node" instance=ExtResource("4_660m8")]
+[node name="Checkpoint" parent="Node" instance=ExtResource("4_jjqp1")]
 position = Vector2(-293, -99)
 
-[node name="Checkpoint2" parent="Node" instance=ExtResource("4_660m8")]
+[node name="Checkpoint2" parent="Node" instance=ExtResource("4_jjqp1")]
 position = Vector2(46, -54)
 
-[node name="Checkpoint3" parent="Node" instance=ExtResource("4_660m8")]
+[node name="Checkpoint3" parent="Node" instance=ExtResource("4_jjqp1")]
 position = Vector2(71, 107)
 
-[node name="Checkpoint4" parent="Node" instance=ExtResource("4_660m8")]
+[node name="Checkpoint4" parent="Node" instance=ExtResource("4_jjqp1")]
 position = Vector2(-203, 90)
 
 [node name="Instrucciones" type="Panel" parent="."]
@@ -671,57 +672,60 @@ Acelera con la variable \"acel\"!
 autowrap_mode = 3
 
 [node name="Respawn" type="Node2D" parent="."]
-position = Vector2(-469, 215)
+position = Vector2(-466, 162)
 
 [node name="Area2D" type="Area2D" parent="Respawn"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Respawn/Area2D"]
-position = Vector2(206.5, -25.5)
+position = Vector2(206, 25)
 shape = SubResource("RectangleShape2D_701jg")
 
 [node name="Sprite2D" type="TextureRect" parent="Respawn"]
 clip_contents = true
-offset_left = 1.0
-offset_top = -58.0
-offset_right = 207.0
-offset_bottom = -54.0
+offset_left = -1.0
+offset_top = -17.0
+offset_right = 205.0
+offset_bottom = -13.0
 scale = Vector2(2, 2)
-texture = ExtResource("5_7wyd1")
+texture = ExtResource("5_83bw0")
 stretch_mode = 1
 
 [node name="Label" type="Label" parent="Respawn"]
-offset_top = -79.0
-offset_right = 48.0
-offset_bottom = -53.0
+offset_left = -2.0
+offset_top = -38.0
+offset_right = 46.0
+offset_bottom = -12.0
 text = "START"
 
-[node name="FINISH" type="Node2D" parent="."]
+[node name="Finish" type="Node2D" parent="."]
 position = Vector2(-468, -163)
 
-[node name="Area2D" type="Area2D" parent="FINISH"]
+[node name="Area2D" type="Area2D" parent="Finish"]
 position = Vector2(-1, 59)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FINISH/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Finish/Area2D"]
 position = Vector2(207, -84)
 shape = SubResource("RectangleShape2D_701jg")
 
-[node name="Sprite2D" type="TextureRect" parent="FINISH"]
+[node name="Sprite2D" type="TextureRect" parent="Finish"]
 clip_contents = true
 offset_top = 1.0
 offset_right = 206.0
 offset_bottom = 5.0
 scale = Vector2(2, 2)
-texture = ExtResource("5_7wyd1")
+texture = ExtResource("5_83bw0")
 stretch_mode = 1
 
-[node name="Label" type="Label" parent="FINISH"]
+[node name="Label" type="Label" parent="Finish"]
 offset_left = -1.0
 offset_top = 12.0
 offset_right = 51.0
 offset_bottom = 38.0
 text = "FINISH"
 
-[connection signal="pressed" from="Panel/VBoxContainer/BtnLoad" to="." method="_load_settings"]
-[connection signal="pressed" from="Panel/VBoxContainer/BtnSave" to="." method="_save_settings"]
-[connection signal="pressed" from="Panel/VBoxContainer/BtnReset" to="." method="_reset_settings"]
-[connection signal="pressed" from="Panel/VBoxContainer/BtnConnect" to="TwitchChatGodot" method="_authenticate"]
+[node name="CountDown" parent="." instance=ExtResource("6_34025")]
+
+[connection signal="pressed" from="PanelSettings/VBoxContainer/BtnLoad" to="." method="_load_settings"]
+[connection signal="pressed" from="PanelSettings/VBoxContainer/BtnSave" to="." method="_save_settings"]
+[connection signal="pressed" from="PanelSettings/VBoxContainer/BtnReset" to="." method="_reset_settings"]
+[connection signal="pressed" from="PanelSettings/VBoxContainer/BtnConnect" to="TwitchChatGodot" method="_authenticate"]
