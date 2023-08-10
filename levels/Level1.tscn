@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://ju25yuo2cpqa"]
+[gd_scene load_steps=12 format=3 uid="uid://ju25yuo2cpqa"]
 
 [ext_resource type="Script" path="res://scripts/Level1.gd" id="1_uxeoc"]
 [ext_resource type="Script" path="res://modules/TwitchChatGodot/TwitchChatGodot.gd" id="2_h2rcl"]
 [ext_resource type="Texture2D" uid="uid://bjc1f3jpfo1o8" path="res://sprites/Environment/Vikings_tilemaps_001.bmp" id="3_6iej8"]
 [ext_resource type="PackedScene" uid="uid://bnitlfmxx2yu3" path="res://Checkpoint.tscn" id="4_jjqp1"]
 [ext_resource type="Texture2D" uid="uid://cbbil6kamaaeo" path="res://sprites/piskel/meta.png" id="5_83bw0"]
+[ext_resource type="PackedScene" uid="uid://m5qjpsymipby" path="res://GameUI.tscn" id="6_24yj0"]
 [ext_resource type="PackedScene" uid="uid://dgi4oelyblvfu" path="res://CountDown.tscn" id="6_34025"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pirx2"]
@@ -519,6 +520,7 @@ script = ExtResource("2_h2rcl")
 [node name="Players" type="Node" parent="."]
 
 [node name="PanelSettings" type="Panel" parent="."]
+visible = false
 offset_left = 342.0
 offset_top = -321.0
 offset_right = 576.0
@@ -668,7 +670,7 @@ Para asignar una variable se usa por ejemplo
 !x = 1
 
 Acelera con la variable \"acel\"!
-!acel = 1"
+!acel = -1"
 autowrap_mode = 3
 
 [node name="Respawn" type="Node2D" parent="."]
@@ -722,6 +724,9 @@ offset_top = 12.0
 offset_right = 51.0
 offset_bottom = 38.0
 text = "FINISH"
+
+[node name="GameUI" parent="Finish" instance=ExtResource("6_24yj0")]
+position = Vector2(812, -157)
 
 [node name="CountDown" parent="." instance=ExtResource("6_34025")]
 

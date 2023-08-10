@@ -2,6 +2,8 @@ extends Node
 
 var state
 var countdown
+var finishOrder
+var players={}
 
 var settings={
  "mass" = 1, #MASA
@@ -12,3 +14,31 @@ var settings={
 }
 
 
+func updatePlayerData(data):
+	if data.cmd == 'PRIVMSG' && !players.has(data["user-id"]):
+		players[data["user-id"]] = {}
+	for i in data:
+		players[data["user-id"]][i] = data[i];
+	if !players[data["user-id"]].has("points"):
+		players[data["user-id"]].points = 0;
+	if !players[data["user-id"]].has("localpoints"):
+		players[data["user-id"]].localpoints = 0;
+		
+func getTop10():
+	var playersArray = []
+	var topPlayers = []
+	for p in players:
+		playersArray.push_back(players[p])
+	playersArray.sort_custom(points_array_sort)
+	for p in playersArray:
+		topPlayers.push_back(p)
+	return topPlayers
+	
+func addPoints(name,p):
+	players[name].localpoints = p
+	players[name].points += p
+	
+func points_array_sort(a, b):
+	return a.points > b.points
+	
+	

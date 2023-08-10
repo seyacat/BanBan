@@ -1,22 +1,51 @@
-[gd_scene format=3 uid="uid://m5qjpsymipby"]
+[gd_scene load_steps=2 format=3 uid="uid://m5qjpsymipby"]
+
+[ext_resource type="Script" path="res://scripts/GameUI.gd" id="1_tibes"]
 
 [node name="GameUI" type="Node2D"]
+script = ExtResource("1_tibes")
 
 [node name="Panel" type="Panel" parent="."]
-offset_right = 259.0
+offset_right = 231.0
 offset_bottom = 464.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 0
-offset_right = 253.0
-offset_bottom = 40.0
+offset_left = 13.0
+offset_right = 220.0
+offset_bottom = 446.0
 
 [node name="Label" type="Label" parent="Panel/VBoxContainer"]
 layout_mode = 2
 text = "Top 10"
 horizontal_alignment = 1
 
+[node name="Top10" type="GridContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/Top10"]
+layout_mode = 2
+text = "Top 10"
+
+[node name="Label2" type="Label" parent="Panel/VBoxContainer/Top10"]
+layout_mode = 2
+text = "Position"
+
 [node name="Label2" type="Label" parent="Panel/VBoxContainer"]
 layout_mode = 2
 text = "Position"
 horizontal_alignment = 1
+
+[node name="finishOrder" type="GridContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/finishOrder"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Top 10"
+
+[node name="Label2" type="Label" parent="Panel/VBoxContainer/finishOrder"]
+layout_mode = 2
+text = "Position"

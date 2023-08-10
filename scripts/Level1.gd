@@ -7,6 +7,7 @@ var defaultSettingsData = GameData.settings;
 func _ready():
 	GameData.state = "new";
 	GameData.countdown = 10;
+	GameData.finishOrder = [];
 	
 	#ONE SECOND TIMER
 	var _timer = Timer.new()
@@ -25,9 +26,12 @@ func _ready():
 func _physics_process(delta):
 	for body in $Respawn/Area2D.get_overlapping_bodies():
 		body.status = GameData.state;
+		
 	for body in $Finish/Area2D.get_overlapping_bodies():
-		print(body)
-		body.status = "finish";
+		if body.status != "finish":
+			body.status = "finish";
+			GameData.finishOrder.push_back(body.name)
+			GameData.addPoints( body.name, max( 10 - (len(GameData.finishOrder)-1)  ,0)  )
 	
 
 func _tic():
@@ -68,6 +72,8 @@ func get_message(data):
 			$Players.add_child(playernode)
 			playernode.position = $Respawn.position + Vector2(30*($Players.get_child_count() % 20),20);
 			data.msg = '!' #send empty to process message
+		
+		GameData.updatePlayerData(data)
 		
 		if( data.has("msg") && data.msg.left(1) == '!' ):
 			playernode._process_message_data(data)
