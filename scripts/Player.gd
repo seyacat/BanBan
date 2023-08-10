@@ -23,8 +23,7 @@ func _physics_process(delta):
 			var vnormal = acel.normalized();
 			vel = vnormal * GameData.maxv/100.0;
 		move_and_collide(vel)
-		print(amagnitude)
-		#print(vel)
+		
 	pass
 	
 	

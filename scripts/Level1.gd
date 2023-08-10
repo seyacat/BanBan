@@ -61,8 +61,6 @@ func get_message(data):
 	_update_settings_from_ui()
 	if data.has("cmd") && data.cmd == "PRIVMSG":
 		var playernode = get_node_or_null("Players/"+data['user-id']);
-		print(playernode)
-		print(data['user-id'])
 		if !playernode && data.msg != "!join":
 			return
 		if !playernode && data.msg == "!join":
