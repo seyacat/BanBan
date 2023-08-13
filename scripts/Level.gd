@@ -8,14 +8,7 @@ func _ready():
 	GameData.state = "new";
 	GameData.countdown = 10;
 	GameData.finishOrder = [];
-	
-	#ONE SECOND TIMER
-	var _timer = Timer.new()
-	add_child(_timer)
-	_timer.connect("timeout", _tic)
-	_timer.set_wait_time(1.0)
-	_timer.set_one_shot(false) # Make sure it loops
-	_timer.start()
+	GameData.nextLevel = "res://levels/Level2.tscn"
 	
 	RenderingServer.set_default_clear_color(Color(0.0,0.0,0.0,1.0))
 	$TwitchChatGodot.connect("new_message",get_message)
@@ -23,20 +16,24 @@ func _ready():
 	_load_settings()
 	_update_ui_from_settings()
 	
-func _physics_process(delta):
+	$NextLevelCountDown.connect("finish",_nextLevel)
+
+func _nextLevel():
+	get_tree().change_scene_to_file(GameData.nextLevel)
+
+func _physics_process(_delta):
 	for body in $Respawn/Area2D.get_overlapping_bodies():
-		body.status = GameData.state;
+		body.state = GameData.state;
 		
 	for body in $Finish/Area2D.get_overlapping_bodies():
-		if body.status != "finish":
-			body.status = "finish";
+		if body.state != "finish":
+			body.state = "finish";
+			if len(GameData.finishOrder) <= 0:
+				GameData.nextLevelCountdown = 15;
 			GameData.finishOrder.push_back(body.name)
 			GameData.addPoints( body.name, max( 10 - (len(GameData.finishOrder)-1)  ,0)  )
-	
-
-func _tic():
+			
 	if GameData.state == "new":
-		GameData.countdown -= 1
 		if GameData.countdown <= 0:
 			GameData.state = "game"
 	
@@ -63,6 +60,13 @@ func get_message(data):
 		var playernode = get_node_or_null("Players/"+data['user-id']);
 		if !playernode && data.msg != "!join":
 			return
+		if playernode && data.msg == "!reset":
+			playernode.name = playernode.name + "_"
+			$Players.remove_child(playernode)
+			playernode.queue_free()
+			playernode = null
+			data.msg = "!join"
+			
 		if !playernode && data.msg == "!join":
 			#playernode = playerBase.instantiate()
 			playernode = carBase.instantiate()

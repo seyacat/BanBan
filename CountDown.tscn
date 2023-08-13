@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/CountDown.gd" id="1_yy46y"]
 
 [node name="CountDown" type="Node2D"]
-position = Vector2(-262, 4)
+position = Vector2(0, 4)
 scale = Vector2(11.365, 11.365)
 script = ExtResource("1_yy46y")
 

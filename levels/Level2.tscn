@@ -1,20 +1,21 @@
-[gd_scene load_steps=14 format=3 uid="uid://ju25yuo2cpqa"]
+[gd_scene load_steps=16 format=3 uid="uid://djfhb20qxvf5p"]
 
-[ext_resource type="Script" path="res://scripts/Level.gd" id="1_6nplx"]
-[ext_resource type="Script" path="res://modules/TwitchChatGodot/TwitchChatGodot.gd" id="2_h2rcl"]
-[ext_resource type="Texture2D" uid="uid://bjc1f3jpfo1o8" path="res://sprites/Environment/Vikings_tilemaps_001.bmp" id="3_6iej8"]
-[ext_resource type="PackedScene" uid="uid://bnitlfmxx2yu3" path="res://Checkpoint.tscn" id="4_jjqp1"]
-[ext_resource type="Texture2D" uid="uid://cbbil6kamaaeo" path="res://sprites/piskel/meta.png" id="5_83bw0"]
-[ext_resource type="Theme" uid="uid://b10gempiforpw" path="res://themes/default.tres" id="5_ov2th"]
-[ext_resource type="PackedScene" uid="uid://m5qjpsymipby" path="res://GameUI.tscn" id="6_24yj0"]
-[ext_resource type="PackedScene" uid="uid://dgi4oelyblvfu" path="res://CountDown.tscn" id="6_34025"]
-[ext_resource type="PackedScene" uid="uid://dlsqqtfpfig4q" path="res://NextLevelCountDown.tscn" id="8_m5csv"]
+[ext_resource type="Script" path="res://scripts/Level.gd" id="1_qmhyh"]
+[ext_resource type="Script" path="res://modules/TwitchChatGodot/TwitchChatGodot.gd" id="2_u5bcn"]
+[ext_resource type="Texture2D" uid="uid://bjc1f3jpfo1o8" path="res://sprites/Environment/Vikings_tilemaps_001.bmp" id="3_4yqok"]
+[ext_resource type="PackedScene" uid="uid://bnitlfmxx2yu3" path="res://Checkpoint.tscn" id="4_olkhw"]
+[ext_resource type="Theme" uid="uid://b10gempiforpw" path="res://themes/default.tres" id="5_3cdm3"]
+[ext_resource type="Texture2D" uid="uid://cbbil6kamaaeo" path="res://sprites/piskel/meta.png" id="5_vnyap"]
+[ext_resource type="PackedScene" uid="uid://m5qjpsymipby" path="res://GameUI.tscn" id="6_070q3"]
+[ext_resource type="Texture2D" uid="uid://cenelkgsxvump" path="res://sprites/timelapse.png" id="6_hav2y"]
+[ext_resource type="PackedScene" uid="uid://dgi4oelyblvfu" path="res://CountDown.tscn" id="7_6dsp5"]
+[ext_resource type="Script" path="res://scripts/NextLevelCountDown.gd" id="8_seobc"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pirx2"]
 friction = 0.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_er2o0"]
-texture = ExtResource("3_6iej8")
+texture = ExtResource("3_4yqok")
 texture_region_size = Vector2i(20, 20)
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -507,13 +508,17 @@ physics_layer_0/physics_material = SubResource("PhysicsMaterial_pirx2")
 sources/1 = SubResource("TileSetAtlasSource_er2o0")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_701jg"]
+resource_local_to_scene = true
 size = Vector2(413, 49)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0dceo"]
+size = Vector2(154.5, 9.00002)
+
 [node name="Level1" type="Node2D"]
-script = ExtResource("1_6nplx")
+script = ExtResource("1_qmhyh")
 
 [node name="TwitchChatGodot" type="Node" parent="."]
-script = ExtResource("2_h2rcl")
+script = ExtResource("2_u5bcn")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="TwitchChatGodot"]
 
@@ -613,6 +618,9 @@ text = "Reset"
 layout_mode = 2
 text = "Connect"
 
+[node name="GameUI" parent="." instance=ExtResource("6_070q3")]
+position = Vector2(344, -320)
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_sdp2e")
 format = 2
@@ -621,63 +629,65 @@ layer_0/tile_data = PackedInt32Array(-983069, 262145, 3, -983068, 196609, 4, -98
 [node name="Node" type="Node2D" parent="."]
 visible = false
 
-[node name="Checkpoint" parent="Node" instance=ExtResource("4_jjqp1")]
+[node name="Checkpoint" parent="Node" instance=ExtResource("4_olkhw")]
 position = Vector2(-293, -99)
 
-[node name="Checkpoint2" parent="Node" instance=ExtResource("4_jjqp1")]
+[node name="Checkpoint2" parent="Node" instance=ExtResource("4_olkhw")]
 position = Vector2(46, -54)
 
-[node name="Checkpoint3" parent="Node" instance=ExtResource("4_jjqp1")]
+[node name="Checkpoint3" parent="Node" instance=ExtResource("4_olkhw")]
 position = Vector2(71, 107)
 
-[node name="Checkpoint4" parent="Node" instance=ExtResource("4_jjqp1")]
+[node name="Checkpoint4" parent="Node" instance=ExtResource("4_olkhw")]
 position = Vector2(-203, 90)
 
 [node name="Instrucciones" type="Panel" parent="."]
 offset_top = -290.0
 offset_right = 313.0
-offset_bottom = 267.0
-theme = ExtResource("5_ov2th")
+offset_bottom = 303.0
+theme = ExtResource("5_3cdm3")
 
 [node name="Label" type="Label" parent="Instrucciones"]
 layout_mode = 0
 offset_left = 12.0
-offset_top = 167.0
+offset_top = 8.0
 offset_right = 71.0
-offset_bottom = 193.0
+offset_bottom = 34.0
 scale = Vector2(2.385, 2.385)
-text = "NIVEL 1"
-
-[node name="Label2" type="Label" parent="Instrucciones"]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 9.0
-offset_right = 304.0
-offset_bottom = 169.0
-text = "Bienvenidos a BAN-BAN.
-BAN-BAN es una serie de mini juegos para programadores, en los cuales durante cada nivel los jugadores deben programar a su bot para que cumpla con el reto."
-autowrap_mode = 3
+text = "NIVEL 2"
 
 [node name="Label3" type="Label" parent="Instrucciones"]
 layout_mode = 0
 offset_left = 12.0
-offset_top = 219.0
+offset_top = 65.0
 offset_right = 302.0
-offset_bottom = 379.0
-text = "Cada sentencia debe empezar con el caracter de comando (!)
-Para empezar usar !join
-RETO 1:
-Llevar el Coche hasta la meta.
-Tip:
-Para asignar una variable se usa por ejemplo
-!x = 1
+offset_bottom = 573.0
+text = "Para este nivel tenemos conceptos nuevos.
+1.- La variable (steer) nos permite controlar la aceleracion angular
+!steer = 10
+2.- !reset vuelve nuestro bot al start
+3.- la primera función de ayuda que asigna valor a una variable cada segundo.
+!_timelapse( [[ \"${variable}\" , ${value} , $delta? ],... ] )
+Podemos ver el código en pantalla de la función. (No es necesario entender el código)
 
-Acelera con la variable \"acel\"!
-!acel = -1"
+Intenta ejecutar 
+!_timelapse(
+[ [\"acel\",1],[\"steer\",-10], [\"steer\",10] ]
+)
+"
 autowrap_mode = 3
 
+[node name="TextureRect" type="TextureRect" parent="Instrucciones"]
+layout_mode = 0
+offset_left = -570.0
+offset_top = 344.0
+offset_right = -4.0
+offset_bottom = 603.0
+texture = ExtResource("6_hav2y")
+expand_mode = 1
+
 [node name="Respawn" type="Node2D" parent="."]
-position = Vector2(-466, 162)
+position = Vector2(-513, 13)
 
 [node name="Area2D" type="Area2D" parent="Respawn"]
 
@@ -692,7 +702,7 @@ offset_top = -17.0
 offset_right = 205.0
 offset_bottom = -13.0
 scale = Vector2(2, 2)
-texture = ExtResource("5_83bw0")
+texture = ExtResource("5_vnyap")
 stretch_mode = 1
 
 [node name="Label" type="Label" parent="Respawn"]
@@ -703,22 +713,23 @@ offset_bottom = -12.0
 text = "START"
 
 [node name="Finish" type="Node2D" parent="."]
-position = Vector2(-468, -163)
+position = Vector2(-58, -213)
+rotation = 1.5708
 
 [node name="Area2D" type="Area2D" parent="Finish"]
-position = Vector2(-1, 59)
+position = Vector2(0, -3)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Finish/Area2D"]
-position = Vector2(207, -84)
-shape = SubResource("RectangleShape2D_701jg")
+position = Vector2(78.75, 7.50001)
+shape = SubResource("RectangleShape2D_0dceo")
 
 [node name="Sprite2D" type="TextureRect" parent="Finish"]
 clip_contents = true
 offset_top = 1.0
-offset_right = 206.0
+offset_right = 78.0
 offset_bottom = 5.0
 scale = Vector2(2, 2)
-texture = ExtResource("5_83bw0")
+texture = ExtResource("5_vnyap")
 stretch_mode = 1
 
 [node name="Label" type="Label" parent="Finish"]
@@ -728,13 +739,34 @@ offset_right = 51.0
 offset_bottom = 38.0
 text = "FINISH"
 
-[node name="GameUI" parent="Finish" instance=ExtResource("6_24yj0")]
-position = Vector2(812, -157)
+[node name="CountDown" parent="." instance=ExtResource("7_6dsp5")]
+position = Vector2(-301, -127)
 
-[node name="CountDown" parent="." instance=ExtResource("6_34025")]
-position = Vector2(-252, 1)
+[node name="NextLevelCountDown" type="Node2D" parent="."]
+position = Vector2(-539, -288)
+script = ExtResource("8_seobc")
 
-[node name="NextLevelCountDown" parent="." instance=ExtResource("8_m5csv")]
+[node name="Panel" type="Panel" parent="NextLevelCountDown"]
+offset_left = -10.0
+offset_top = -5.0
+offset_right = 167.0
+offset_bottom = 23.0
+
+[node name="Label" type="Label" parent="NextLevelCountDown/Panel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 2.0
+offset_right = 115.0
+offset_bottom = 28.0
+text = "Next Level In: "
+
+[node name="Label2" type="Label" parent="NextLevelCountDown/Panel"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 3.0
+offset_right = 224.0
+offset_bottom = 29.0
+text = "00.00"
 
 [connection signal="pressed" from="PanelSettings/VBoxContainer/BtnLoad" to="." method="_load_settings"]
 [connection signal="pressed" from="PanelSettings/VBoxContainer/BtnSave" to="." method="_save_settings"]

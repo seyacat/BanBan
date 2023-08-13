@@ -8,7 +8,7 @@ func _ready():
 	pass # Replace with function body.
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
+func _physics_process(_delta):
 	var acelArray = $JintMachine.getDoubleArray('acel')
 	if acelArray.size() == 2:
 		$AnimatedSprite2D.flip_h = acelArray[0] < 0

@@ -6,7 +6,3 @@ func _ready():
 	$Label.text = str( get_index()+1 );
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass

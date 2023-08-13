@@ -11,6 +11,7 @@ public partial class JintMachine : Node
     Jint.Engine machine;
     string context = "{\"test\":\"1\"}";
     JsArray acel;
+    double lastTic = Time.GetTicksUsec();
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -18,13 +19,13 @@ public partial class JintMachine : Node
         machine = new Jint.Engine(options =>
         {
             // Limit memory allocations to MB
-            //options.LimitMemory(4_000_000);
+            options.LimitMemory(4_000_000);
 
             // Set a timeout to 4 seconds.
-            //options.TimeoutInterval(TimeSpan.FromSeconds(0.1));
+            options.TimeoutInterval(TimeSpan.FromSeconds(1));
 
             // Set limit of 1000 executed statements.
-            //options.MaxStatements(10);
+            options.MaxStatements(1000);
 
             // Use a cancellation token.
             //options.CancellationToken(cancellationToken);
@@ -35,9 +36,20 @@ public partial class JintMachine : Node
         {
             machine.Execute(
                 @"
-			let context = {}
-			const parseContext = () => {
-				context = JSON.parse(jsonContext)
+            const global = this;
+            let update
+            let _timelapse_data
+			const _timelapse = (data)=>{
+                _timelapse_data = data
+				update = (context)=>{
+                    if( _timelapse_data.length ){
+                        _timelapse_data[0][2] = (_timelapse_data[0]?.[2] ?? 1000) - context.delta
+                        if( _timelapse_data[0][2] <= 0 ){
+                            action = _timelapse_data.shift()
+                            this[action[0]] = action[1]
+                        }
+                    }
+                }
 			}
 			"
             );
@@ -63,20 +75,19 @@ public partial class JintMachine : Node
         {
             running = true;
             //await Task.Delay(2000);
-            double startTime = Time.GetTicksUsec();
+            double startTic = Time.GetTicksUsec();
 
-            machine.SetValue("jsonContext", context);
+            machine.SetValue("context", new { delta = (startTic - lastTic) / 1000 });
 
             machine.Execute(
                 @"
-				parseContext();
 				if( typeof update === 'function' ){
 						update(context);
 					}
 				"
             );
 
-            double elapsed = Time.GetTicksUsec() - startTime;
+            lastTic = startTic;
         }
         catch (Exception e)
         {

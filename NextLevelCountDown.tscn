@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlsqqtfpfig4q"]
+
+[ext_resource type="Script" path="res://scripts/NextLevelCountDown.gd" id="1_qhfjv"]
+
+[node name="NextLevelCountDown" type="Node2D"]
+position = Vector2(-539, -288)
+script = ExtResource("1_qhfjv")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -10.0
+offset_top = -5.0
+offset_right = 167.0
+offset_bottom = 23.0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 2.0
+offset_right = 115.0
+offset_bottom = 28.0
+text = "Next Level In: "
+
+[node name="Label2" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 3.0
+offset_right = 224.0
+offset_bottom = 29.0
+text = "00.00"

@@ -1,7 +1,9 @@
 extends Node
 
 var state
-var countdown
+var countdown = 0
+var nextLevel
+var nextLevelCountdown = 0
 var finishOrder
 var players={}
 
@@ -34,9 +36,9 @@ func getTop10():
 		topPlayers.push_back(p)
 	return topPlayers
 	
-func addPoints(name,p):
-	players[name].localpoints = p
-	players[name].points += p
+func addPoints(n,p):
+	players[n].localpoints = p
+	players[n].points += p
 	
 func points_array_sort(a, b):
 	return a.points > b.points

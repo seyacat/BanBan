@@ -33,10 +33,6 @@ func _tic():
 		$Panel/VBoxContainer/Top10.add_child( label )
 		$Panel/VBoxContainer/Top10.add_child( labelPoints )
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
 func removeAllChildren(node):
 	for c in node.get_children():
 		node.remove_child(c)
