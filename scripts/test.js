@@ -1,8 +1,8 @@
 const global = this;
 let update;
 let _timelapse_data;
-const _timelapse = () => {
-  _timelapse_data = arguments;
+const _timelapse = (data) => {
+  _timelapse_data = data;
   update = (context) => {
     if (_timelapse_data.length) {
       _timelapse_data[0][2] = (_timelapse_data[0]?.[2] ?? 1000) - context.delta;

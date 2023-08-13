@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://djfhb20qxvf5p"]
 
-[ext_resource type="Script" path="res://scripts/Level.gd" id="1_qmhyh"]
+[ext_resource type="Script" path="res://scripts/Level2.gd" id="1_tqpqh"]
 [ext_resource type="Script" path="res://modules/TwitchChatGodot/TwitchChatGodot.gd" id="2_u5bcn"]
 [ext_resource type="Texture2D" uid="uid://bjc1f3jpfo1o8" path="res://sprites/Environment/Vikings_tilemaps_001.bmp" id="3_4yqok"]
 [ext_resource type="PackedScene" uid="uid://bnitlfmxx2yu3" path="res://Checkpoint.tscn" id="4_olkhw"]
@@ -514,8 +514,8 @@ size = Vector2(413, 49)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0dceo"]
 size = Vector2(154.5, 9.00002)
 
-[node name="Level1" type="Node2D"]
-script = ExtResource("1_qmhyh")
+[node name="Level2" type="Node2D"]
+script = ExtResource("1_tqpqh")
 
 [node name="TwitchChatGodot" type="Node" parent="."]
 script = ExtResource("2_u5bcn")
@@ -667,7 +667,7 @@ text = "Para este nivel tenemos conceptos nuevos.
 !steer = 10
 2.- !reset vuelve nuestro bot al start
 3.- la primera función de ayuda que asigna valor a una variable cada segundo.
-!_timelapse( [[ \"${variable}\" , ${value} , $delta? ],... ] )
+!_timelapse( [[ \"${variable}\" , ${value} , ${timeout=1000} ],... ] )
 Podemos ver el código en pantalla de la función. (No es necesario entender el código)
 
 Intenta ejecutar 
@@ -679,15 +679,15 @@ autowrap_mode = 3
 
 [node name="TextureRect" type="TextureRect" parent="Instrucciones"]
 layout_mode = 0
-offset_left = -570.0
-offset_top = 344.0
-offset_right = -4.0
-offset_bottom = 603.0
+offset_left = -572.0
+offset_top = 434.0
+offset_right = -6.0
+offset_bottom = 591.0
 texture = ExtResource("6_hav2y")
 expand_mode = 1
 
 [node name="Respawn" type="Node2D" parent="."]
-position = Vector2(-513, 13)
+position = Vector2(-473, 89)
 
 [node name="Area2D" type="Area2D" parent="Respawn"]
 
