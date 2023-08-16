@@ -1,5 +1,5 @@
 extends CharacterBody2D
-
+const bomb = preload("res://props/bomb.tscn")
 var settings = {}
 var vel
 # Called when the node enters the scene tree for the first time.
@@ -9,24 +9,23 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):
-	var acelArray = $JintMachine.getDoubleArray('acel')
-	if acelArray.size() == 2:
-		$AnimatedSprite2D.flip_h = acelArray[0] < 0
-		var acel = Vector2(acelArray[0],acelArray[1])
-		var amagnitude = acel.length();
-		if( amagnitude > GameData.maxa/100.0 ):
-			var anormal = acel.normalized();
-			acel = anormal * GameData.maxa/100.0;
-		vel = vel + acel
-		var vmagnitude = vel.length()
-		if( vmagnitude > GameData.maxv/100.0 ):
-			var vnormal = acel.normalized();
-			vel = vnormal * GameData.maxv/100.0;
-		move_and_collide(vel)
+	var vel = $JintMachine.getDoubleArray('v')
+	if vel.size() == 2:
+		move_and_collide(Vector2( vel[0],vel[1]).clamp( Vector2(-1,-1),Vector2(1,1)))
+	"""var bvel = $JintMachine.getDoubleArray('b_target')
+	if bvel.size() == 2:
+		var b = bomb.instantiate();
+		b.linear_velocity( Vector2( bvel[0],bvel[1]).clamp( Vector2(-1,-1),Vector2(1,1)) )
+		get_parent().add_child(b)
+		#move_and_collide(Vector2( vel[0],vel[1]).clamp( Vector2(-1,-1),Vector2(1,1)))"""
+	
 		
 	pass
 	
 	
-func _process_message(msg):
+func _process_message_data(data):
+	var msg = data.msg.right( data.msg.length()-1 ) 
+	#$CarSprite2D.modulate = Color.html(data.color) # blue shade
+	$LabelContainer/Label.text = data.username
 	$JintMachine.ExecMessage(msg)
 

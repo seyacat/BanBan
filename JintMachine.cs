@@ -51,6 +51,18 @@ public partial class JintMachine : Node
                     }
                 }
 			}
+            let m_target
+            const m = (x,y)=>{
+                m_target = [x,y]
+				update = (context)=>{
+                    global.v = [ m_target[0]-context.position[0],m_target[1]-context.position[1] ]
+                }
+			}
+            let b_target
+            const b = (x,y)=>{
+                global.b = [x,y]
+			}
+
 			"
             );
         }
@@ -77,10 +89,14 @@ public partial class JintMachine : Node
             //await Task.Delay(2000);
             double startTic = Time.GetTicksUsec();
 
-            machine.SetValue("context", new { delta = (startTic - lastTic) / 1000 });
+            machine.SetValue(
+                "context",
+                new { delta = (startTic - lastTic) / 1000, position = GetParent<Node2D>().Position }
+            );
 
             machine.Execute(
                 @"
+                position = [context.position[0],context.position[1]]
 				if( typeof update === 'function' ){
 						update(context);
 					}

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://l2bhsgbqblcb"]
+
+[ext_resource type="Texture2D" uid="uid://tkj4kr1p1mk3" path="res://sprites/bomb/explotion.png" id="1_m1rk7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3qs0l"]
+radius = 35.0143
+
+[node name="explotion" type="AnimatableBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_m1rk7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3qs0l")

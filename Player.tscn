@@ -115,3 +115,15 @@ frame_progress = 0.827482
 
 [node name="HumanShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_e4oco")
+
+[node name="LabelContainer" type="Node2D" parent="."]
+rotation = 6.28318
+scale = Vector2(0.75, 0.75)
+
+[node name="Label" type="Label" parent="LabelContainer"]
+offset_left = -35.0
+offset_top = -39.0
+offset_right = 35.0
+offset_bottom = -13.0
+text = "Anonimous"
+clip_text = true

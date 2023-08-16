@@ -11,13 +11,18 @@ config_version=5
 [application]
 
 config/name="Mini Game"
-run/main_scene="res://levels/Level1.tscn"
+run/main_scene="res://levels/FightLevel.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameData="*res://GameData.gd"
+
+[display]
+
+window/size/viewport_width=500
+window/size/viewport_height=500
 
 [dotnet]
 
