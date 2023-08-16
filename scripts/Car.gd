@@ -11,8 +11,8 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):
 	if state == "game":
-		var acel = clamp( $JintMachine.getDouble('acel') , -GameData.settings.maxa, GameData.settings.maxa) 
-		var aceladg = clamp( $JintMachine.getDouble('steer'),-GameData.settings.maxaa, GameData.settings.maxaa)  
+		var acel = clamp( $JintMachine.getDouble('a') , -GameData.settings.maxa, GameData.settings.maxa) 
+		var aceladg = clamp( $JintMachine.getDouble('s'),-GameData.settings.maxaa, GameData.settings.maxaa)  
 		var acela =  aceladg * PI / 180 
 		acel = acel if !is_nan(acel) else 0
 		acela = acela if !is_nan(acela) else 0

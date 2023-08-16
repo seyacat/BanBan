@@ -66,13 +66,15 @@ func get_message(data):
 			playernode.queue_free()
 			playernode = null
 			data.msg = "!join"
-			
+		
+		#RESPAWN	
 		if !playernode && data.msg == "!join":
 			#playernode = playerBase.instantiate()
 			playernode = carBase.instantiate()
 			playernode.name = data['user-id']
 			$Players.add_child(playernode)
-			playernode.position = $Respawn.position + Vector2(30*($Players.get_child_count() % 20),20);
+			playernode.position = $Respawn.global_transform * Vector2(30*($Players.get_child_count() % 20),20);
+			playernode.rotation = $Respawn.rotation
 			data.msg = '!' #send empty to process message
 		
 		GameData.updatePlayerData(data)

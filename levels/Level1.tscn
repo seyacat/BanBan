@@ -672,8 +672,8 @@ Tip:
 Para asignar una variable se usa por ejemplo
 !x = 1
 
-Acelera con la variable \"acel\"!
-!acel = -1"
+Acelera con la variable \"a\"!
+!a = -1"
 autowrap_mode = 3
 
 [node name="Respawn" type="Node2D" parent="."]

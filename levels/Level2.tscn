@@ -663,8 +663,8 @@ offset_top = 65.0
 offset_right = 302.0
 offset_bottom = 573.0
 text = "Para este nivel tenemos conceptos nuevos.
-1.- La variable (steer) nos permite controlar la aceleracion angular
-!steer = 10
+1.- La variable (s) nos permite controlar la aceleracion angular
+!s = 10
 2.- !reset vuelve nuestro bot al start
 3.- la primera función de ayuda que asigna valor a una variable cada segundo.
 !_timelapse( [[ \"${variable}\" , ${value} , ${timeout=1000} ],... ] )
@@ -672,7 +672,7 @@ Podemos ver el código en pantalla de la función. (No es necesario entender el 
 
 Intenta ejecutar 
 !_timelapse(
-[ [\"acel\",1],[\"steer\",-10], [\"steer\",10] ]
+[ [\"a\",1],[\"s\",-10], [\"s\",10] ]
 )
 "
 autowrap_mode = 3
