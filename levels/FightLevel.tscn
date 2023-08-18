@@ -619,17 +619,17 @@ offset_top = 260.0
 offset_right = 250.0
 offset_bottom = 349.0
 
+[node name="GameUI" parent="PanelSettings2" instance=ExtResource("5_abiyw")]
+position = Vector2(-2, -1)
+
 [node name="BtnConnect" type="Button" parent="PanelSettings2"]
 layout_mode = 0
-offset_left = 409.0
+offset_left = 412.0
 offset_top = 12.0
-offset_right = 481.0
+offset_right = 484.0
 offset_bottom = 73.0
 text = "Connect"
 script = ExtResource("4_b56t1")
-
-[node name="GameUI" parent="PanelSettings2" instance=ExtResource("5_abiyw")]
-position = Vector2(0, 12)
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
@@ -659,6 +659,15 @@ offset_top = -351.0
 offset_right = 251.0
 offset_bottom = -263.0
 script = ExtResource("4_f24dg")
+
+[node name="Label14" type="Label" parent="Instrucciones"]
+layout_mode = 0
+offset_left = 132.0
+offset_top = 5.0
+offset_right = 205.0
+offset_bottom = 31.0
+scale = Vector2(3.54848, 3.55812)
+text = "BAN-BAN"
 
 [node name="Label" type="Label" parent="Instrucciones"]
 visible = false

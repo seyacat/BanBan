@@ -53,6 +53,8 @@ public partial class JintMachine : Node
                             action = _timelapse_data.shift()
                             this[action[0]] = action[1]
                         }
+                    }else{
+                        update = null
                     }
                 }
 			}
