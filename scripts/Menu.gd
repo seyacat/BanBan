@@ -6,7 +6,10 @@ func _ready():
 	var _timer = Timer.new()
 	add_child(_timer)
 	_timer.connect("timeout", _tic)
-	_timer.set_wait_time(5.0)
+	if(OS.is_debug_build()):
+		_timer.set_wait_time(0.5)
+	else:
+		_timer.set_wait_time(5.0)
 	_timer.set_one_shot(false) # Make sure it loops
 	_timer.start()
 

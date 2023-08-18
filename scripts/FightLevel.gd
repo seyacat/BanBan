@@ -16,7 +16,6 @@ func _ready():
 	_load_settings()
 	_update_ui_from_settings()
 	
-	
 
 func _nextLevel():
 	get_tree().change_scene_to_file(GameData.nextLevel)
@@ -39,6 +38,7 @@ func _update_settings_from_ui():
 	GameData.settings.maxaa = $PanelSettings/VBoxContainer/HBoxContainer5/maxAA.value;	
 
 func get_message(data):
+
 	_update_settings_from_ui()
 	if data.has("cmd") && data.cmd == "PRIVMSG":
 		#Join alternative

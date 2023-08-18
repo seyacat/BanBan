@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://dn2bjbujtq0hv"]
+[gd_scene load_steps=11 format=3 uid="uid://dn2bjbujtq0hv"]
 
 [ext_resource type="Script" path="res://scripts/FightLevel.gd" id="1_2vk8b"]
 [ext_resource type="Script" path="res://modules/TwitchChatGodot/TwitchChatGodot.gd" id="2_oplrh"]
 [ext_resource type="Texture2D" uid="uid://bjc1f3jpfo1o8" path="res://sprites/Environment/Vikings_tilemaps_001.bmp" id="3_60hyg"]
-[ext_resource type="Script" path="res://scripts/PanelSettings.gd" id="4_5wr0t"]
 [ext_resource type="Script" path="res://scripts/BtnConnect.gd" id="4_b56t1"]
 [ext_resource type="Script" path="res://scripts/Instrucciones.gd" id="4_f24dg"]
 [ext_resource type="PackedScene" uid="uid://m5qjpsymipby" path="res://GameUI.tscn" id="5_abiyw"]
@@ -525,16 +524,15 @@ script = ExtResource("2_oplrh")
 [node name="Bombs" type="Node2D" parent="."]
 
 [node name="PanelSettings" type="Panel" parent="."]
-offset_left = -118.0
-offset_top = -153.0
-offset_right = 116.0
-offset_bottom = 140.0
-script = ExtResource("4_5wr0t")
+offset_left = 16.0
+offset_top = -253.0
+offset_right = 250.0
+offset_bottom = 390.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelSettings"]
 layout_mode = 0
 offset_left = 10.0
-offset_top = 44.0
+offset_top = 13.0
 offset_right = 221.0
 offset_bottom = 580.0
 
@@ -646,7 +644,6 @@ horizontal_alignment = 1
 [node name="AnonimousChannel" type="LineEdit" parent="PanelSettings/VBoxContainer"]
 layout_mode = 2
 text = "seyacat"
-placeholder_text = "Insert Channel"
 alignment = 1
 script = ExtResource("5_efppr")
 
@@ -660,15 +657,6 @@ layout_mode = 2
 text = "Disconnect"
 script = ExtResource("4_b56t1")
 
-[node name="HideButton" type="Button" parent="PanelSettings"]
-layout_mode = 0
-offset_left = 196.0
-offset_top = 10.0
-offset_right = 228.0
-offset_bottom = 41.0
-scale = Vector2(0.632863, 0.632863)
-text = "X"
-
 [node name="PanelSettings2" type="Panel" parent="."]
 offset_left = -248.0
 offset_top = 260.0
@@ -677,14 +665,6 @@ offset_bottom = 349.0
 
 [node name="GameUI" parent="PanelSettings2" instance=ExtResource("5_abiyw")]
 position = Vector2(-2, -1)
-
-[node name="Button" type="Button" parent="PanelSettings2"]
-layout_mode = 0
-offset_left = 458.0
-offset_top = 7.0
-offset_right = 489.0
-offset_bottom = 38.0
-text = "i"
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
@@ -869,8 +849,6 @@ context contiene informacion del entorno
 {postion:vector2,enemies:object{id:string,position:vector2}}"
 autowrap_mode = 3
 
-[connection signal="channel_loaded" from="TwitchChatGodot" to="PanelSettings/VBoxContainer/AnonimousChannel" method="setAnnonimousChannelLabel"]
-[connection signal="connected" from="TwitchChatGodot" to="PanelSettings" method="_hide"]
 [connection signal="pressed" from="PanelSettings/VBoxContainer/BtnLoad" to="." method="_load_settings"]
 [connection signal="pressed" from="PanelSettings/VBoxContainer/BtnSave" to="." method="_save_settings"]
 [connection signal="pressed" from="PanelSettings/VBoxContainer/BtnReset" to="." method="_reset_settings"]
@@ -878,5 +856,3 @@ autowrap_mode = 3
 [connection signal="pressed" from="PanelSettings/VBoxContainer/BtnDisconnect" to="TwitchChatGodot" method="_disconnect"]
 [connection signal="pressed" from="PanelSettings/VBoxContainer/BtnConnect2" to="TwitchChatGodot" method="_anon_connection"]
 [connection signal="pressed" from="PanelSettings/VBoxContainer/BtnDisconnect2" to="TwitchChatGodot" method="_disconnect"]
-[connection signal="pressed" from="PanelSettings/HideButton" to="PanelSettings" method="_hide"]
-[connection signal="pressed" from="PanelSettings2/Button" to="PanelSettings" method="_show"]

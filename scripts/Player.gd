@@ -1,5 +1,6 @@
 extends CharacterBody2D
 const bomb = preload("res://props/bomb.tscn")
+const diePlayer = preload("res://DiePlayer.tscn")
 var settings = {}
 var cooldown = 50
 var life = 100
@@ -26,6 +27,8 @@ func _physics_process(delta):
 	var vel = $JintMachine.getDoubleArray('_v')
 	if vel.size() == 2:
 		var last_position = position
+		if( vel[0] != 0 ):
+			$Sprite2D.flip_h = vel[0]<0;
 		move_and_collide(Vector2( vel[0],vel[1]).clamp( Vector2(-1,-1),Vector2(1,1)))
 		
 		if(last_position != position):
@@ -67,6 +70,10 @@ func damage(d,player_id):
 func kill():
 	#get_tree().root()$TwitchChatGodot._ban(  )
 	get_node("../../TwitchChatGodot")._ban(GameData.players[name],30,"MUERTO")
+	var dp = diePlayer.instantiate()
+	dp.position = position
+	dp.get_node("Sprite2D").flip_h = $Sprite2D.flip_h
+	get_parent().add_child(dp)
 	queue_free()
 	
 	
