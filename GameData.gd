@@ -36,9 +36,9 @@ func getTop10():
 		topPlayers.push_back(p)
 	return topPlayers
 	
-func addPoints(n,p):
-	players[n].localpoints = p
-	players[n].points += p
+func addPoints(player_id,p):
+	players[player_id].localpoints = p
+	players[player_id].points += p
 	
 func points_array_sort(a, b):
 	return a.points > b.points

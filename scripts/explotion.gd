@@ -1,9 +1,7 @@
-extends RigidBody2D
+extends Area2D
 
-const explotion = preload("res://props/explotion.tscn")
+var timeout = 1
 var player_id
-
-var timeout = 10;
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var _timer = Timer.new()
@@ -13,16 +11,14 @@ func _ready():
 	_timer.set_one_shot(false) # Make sure it loops
 	_timer.start()
 	pass # Replace with function body.
+	pass # Replace with function body.
+
+func _physics_process(delta):
+	for body in get_overlapping_bodies():
+		if(body.has_method('damage')):
+			body.damage(delta*50,player_id)
 
 func _tic():
 	timeout -= 1
-	$LabelContainer/Label.text = str(timeout)
-	if timeout <= 0:
-		$CollisionShape2D.disabled = true
-		var expl = explotion.instantiate()
-		expl.player_id = player_id
-		expl.position = position
-		get_parent().add_child(expl);
-		
+	if(timeout <= 0):
 		queue_free()
-		

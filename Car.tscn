@@ -1,8 +1,49 @@
 [gd_scene load_steps=7 format=3 uid="uid://uxps1i6yeeqh"]
 
-[ext_resource type="Script" path="res://scripts/Car.gd" id="1_64vwq"]
 [ext_resource type="Script" path="res://JintMachine.cs" id="2_8eoyd"]
 [ext_resource type="Texture2D" uid="uid://i71yg6ttodhb" path="res://sprites/Car/f1.png" id="4_iaci6"]
+
+[sub_resource type="GDScript" id="GDScript_v6nqe"]
+script/source = "extends RigidBody2D
+
+var state
+var vel
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	state = \"new\"
+	vel = Vector2(0,0);
+	pass # Replace with function body.
+	
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _physics_process(_delta):
+	if state == \"game\":
+		var acel = clamp( $JintMachine.getDouble('a') , -GameData.settings.maxa, GameData.settings.maxa) 
+		var aceladg = clamp( $JintMachine.getDouble('s'),-GameData.settings.maxaa, GameData.settings.maxaa)  
+		var acela =  aceladg * PI / 180 
+		acel = acel if !is_nan(acel) else 0
+		acela = acela if !is_nan(acela) else 0
+		if !is_nan(acel) && !is_nan(acela):
+			var veli = linear_velocity.length();
+			var velf = (linear_velocity + (-global_transform.y) * acel).length()
+			if abs(velf) < abs(veli) || abs(velf) < GameData.settings.maxv:
+				linear_velocity = linear_velocity + (-global_transform.y) * acel
+				linear_velocity = linear_velocity - linear_velocity.project(global_transform.x)
+			var abs_vela = abs(angular_velocity + acela)
+			if abs_vela < abs(angular_velocity) || abs(angular_velocity + acela) < GameData.settings.maxav:
+				angular_velocity = angular_velocity + acela 
+	if state == \"finish\":
+		angular_velocity = 0
+		linear_velocity = linear_velocity * 0.98;
+	
+	
+	
+func _process_message_data(data):
+	var msg = data.msg.right( data.msg.length()-1 ) 
+	$CarSprite2D.modulate = Color.html(data.color) # blue shade
+	$LabelContainer/Label.text = data.username
+	$JintMachine.ExecMessage(msg)
+
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o7cl6"]
 size = Vector2(24, 52)
@@ -24,7 +65,7 @@ animations = [{
 
 [node name="Car" type="RigidBody2D"]
 gravity_scale = 0.0
-script = ExtResource("1_64vwq")
+script = SubResource("GDScript_v6nqe")
 
 [node name="JintMachine" type="Node" parent="."]
 script = ExtResource("2_8eoyd")

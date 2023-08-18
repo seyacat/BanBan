@@ -1,8 +1,9 @@
 extends Node2D
 
-
+var topContainer
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	topContainer = $Panel/VBoxContainer/Top10
 	#ONE SECOND TIMER
 	var _timer = Timer.new()
 	add_child(_timer)
@@ -13,26 +14,18 @@ func _ready():
 	pass # Replace with function body.
 
 func _tic():
-	removeAllChildren($Panel/VBoxContainer/Top10)
-	removeAllChildren($Panel/VBoxContainer/finishOrder)
-	for p in GameData.finishOrder:
-		var label = Label.new();
-		label.size_flags_horizontal = 2
-		var labelPoints = Label.new();
-		var player = GameData.players[p]
-		labelPoints.text = str(player.localpoints)
-		label.text = player["display-name"] ;
-		$Panel/VBoxContainer/finishOrder.add_child( label )
-		$Panel/VBoxContainer/finishOrder.add_child( labelPoints )
+	removeAllChildren(topContainer)
 	for p in GameData.getTop10():
 		var label = Label.new();
 		label.size_flags_horizontal = 2
 		var labelPoints = Label.new();
 		label.text = p["display-name"];
 		labelPoints.text = str(p.points)
-		$Panel/VBoxContainer/Top10.add_child( label )
-		$Panel/VBoxContainer/Top10.add_child( labelPoints )
+		topContainer.add_child( label )
+		topContainer.add_child( labelPoints )
 
 func removeAllChildren(node):
+	if !node:
+		return
 	for c in node.get_children():
 		node.remove_child(c)

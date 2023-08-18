@@ -20,23 +20,6 @@ func _ready():
 
 func _nextLevel():
 	get_tree().change_scene_to_file(GameData.nextLevel)
-
-func _physics_process(_delta):
-	"""for body in $Respawn/Area2D.get_overlapping_bodies():
-		body.state = GameData.state;
-		
-	for body in $Finish/Area2D.get_overlapping_bodies():
-		if body.state != "finish":
-			body.state = "finish";
-			if len(GameData.finishOrder) <= 0:
-				GameData.nextLevelCountdown = 15;
-			GameData.finishOrder.push_back(body.name)
-			GameData.addPoints( body.name, max( 10 - (len(GameData.finishOrder)-1)  ,0)  )
-			
-	if GameData.state == "new":
-		if GameData.countdown <= 0:
-			GameData.state = "game"
-			"""
 	
 			
 func _reset_settings():
@@ -58,10 +41,16 @@ func _update_settings_from_ui():
 func get_message(data):
 	_update_settings_from_ui()
 	if data.has("cmd") && data.cmd == "PRIVMSG":
+		#Join alternative
+		data.msg = '!join' if data.msg=="!j" else data.msg
+
+		
 		var playernode = get_node_or_null("Players/"+data['user-id']);
+		var current_life
 		if !playernode && data.msg != "!join":
 			return
 		if playernode && data.msg == "!reset":
+			current_life = playernode.life
 			playernode.name = playernode.name + "_"
 			$Players.remove_child(playernode)
 			playernode.queue_free()
@@ -71,10 +60,20 @@ func get_message(data):
 		#RESPAWN	
 		if !playernode && data.msg == "!join":
 			playernode = playerBase.instantiate()
+			if current_life:
+				playernode.life = current_life
+			playernode.position = $Camera2D.position + Vector2( randf_range(-220,220), randf_range(-250,250) )
 			playernode.name = data['user-id']
 			$Players.add_child(playernode)
-			playernode.position = $Camera2D.position + Vector2( randf_range(-250,250), randf_range(-250,250) )
 			data.msg = '!' #send empty to process message
+		
+		#Command Mapping
+		data.msg = '!u()' if data.msg=="!u" else data.msg
+		data.msg = '!d()' if data.msg=="!d" else data.msg
+		data.msg = '!l()' if data.msg=="!l" else data.msg
+		data.msg = '!r()' if data.msg=="!r" else data.msg
+		data.msg = '!_h=true' if data.msg=="!h" else data.msg
+		data.msg = '!' if data.msg=="!join" else data.msg
 		
 		GameData.updatePlayerData(data)
 		

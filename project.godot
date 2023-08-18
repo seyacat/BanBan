@@ -22,11 +22,15 @@ GameData="*res://GameData.gd"
 [display]
 
 window/size/viewport_width=500
-window/size/viewport_height=500
+window/size/viewport_height=700
 
 [dotnet]
 
 project/assembly_name="Mini Game"
+
+[physics]
+
+2d/default_gravity=0.0
 
 [rendering]
 
