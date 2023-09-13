@@ -20,11 +20,11 @@ Métodos
 !b(angle,velocity): Bomba de 10 segundos, usala para matar a tus enemigos
 
 Variables
-_v = [0,0]: La variable _v se lee del interprete para mover el jugador
-_b = [0,0]: La variable _b se lee del interprete para lanzar una bomba
-_h = true: La variable _b se lee del interprete para activar el ataque
-context: contiene informacion del entorno
-{delta:double,postion:vector2,enemies:object{id:string,position:vector2}}
+_v = [0,0]: La variable _v se lee del interprete para mover el jugador<br>
+_b = [0,0]: La variable _b se lee del interprete para lanzar una bomba<br>
+_h = true: La variable _b se lee del interprete para activar el ataque<br>
+context: contiene informacion del entorno<br>
+{delta:double,postion:vector2,enemies:object{id:string,position:vector2}}<br>
 
 Especial
 !update=>(ctx)=>{ .... } La funcion update se ejecuta cada frame, recibe contexto como parametro. ojo consume vida hasta dejarte a un 10%
