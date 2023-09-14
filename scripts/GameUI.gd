@@ -19,7 +19,9 @@ func _tic():
 		var label = Label.new();
 		label.size_flags_horizontal = 2
 		var labelPoints = Label.new();
-		label.text = p["display-name"];
+		
+		label.text = p["display-name"] if p.has("display-name") else 'Anonimo';
+			
 		labelPoints.text = str(p.points)
 		topContainer.add_child( label )
 		topContainer.add_child( labelPoints )

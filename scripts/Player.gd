@@ -25,7 +25,7 @@ func _physics_process(delta):
 	$LabelContainer/Life.value = life
 	$LabelContainer/Cooldown.value = cooldown
 	var vel = $JintMachine.getDoubleArray('_v')
-	if vel.size() == 2:
+	if vel.size() == 2 && !is_nan(vel[0]) && !is_nan(vel[1]):
 		var last_position = position
 		if( vel[0] != 0 ):
 			$Sprite2D.flip_h = vel[0]<0;
@@ -36,7 +36,7 @@ func _physics_process(delta):
 	var bvel = $JintMachine.getDoubleArrayAndNulify('_b')
 	if bvel.size() == 2 && cooldown >= 100:
 		cooldown = 0
-		var max_bvel = 100;
+		var max_bvel = 200;
 		var b = bomb.instantiate();
 		b.player_id = name
 		b.add_collision_exception_with(self)
@@ -69,7 +69,7 @@ func damage(d,player_id):
 		
 func kill():
 	#get_tree().root()$TwitchChatGodot._ban(  )
-	get_node("../../TwitchChatGodot")._ban(GameData.players[name],30,"MUERTO")
+	get_node("../../TwitchChatGodot")._ban(GameData.players[name],5,"MUERTO")
 	var dp = diePlayer.instantiate()
 	dp.position = position
 	dp.get_node("Sprite2D").flip_h = $Sprite2D.flip_h
@@ -80,6 +80,7 @@ func kill():
 func _process_message_data(data):
 	var msg = data.msg.right( data.msg.length()-1 ) 
 	#$CarSprite2D.modulate = Color.html(data.color) # blue shade
-	$LabelContainer/Label.text = data.username
+	if(data.has('username')):
+		$LabelContainer/Label.text = data.username
 	$JintMachine.ExecMessage(msg)
 

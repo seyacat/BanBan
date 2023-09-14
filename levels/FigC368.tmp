@@ -542,11 +542,6 @@ position = Vector2(155, -153)
 scale = Vector2(0.04, 0.04)
 texture = ExtResource("5_xh1b3")
 
-[node name="P3" type="Sprite2D" parent="ClickOverlay"]
-position = Vector2(161.2, -159.12)
-scale = Vector2(0.02, 0.02)
-texture = ExtResource("5_xh1b3")
-
 [node name="Dialog" type="Panel" parent="ClickOverlay"]
 offset_left = -135.0
 offset_top = -177.0

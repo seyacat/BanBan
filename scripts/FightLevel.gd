@@ -16,6 +16,8 @@ func _ready():
 	_load_settings()
 	_update_ui_from_settings()
 	
+	$ClickOverlay.connect("new_message",get_click)
+	
 
 func _nextLevel():
 	get_tree().change_scene_to_file(GameData.nextLevel)
@@ -37,6 +39,25 @@ func _update_settings_from_ui():
 	GameData.settings.maxav = $PanelSettings/VBoxContainer/HBoxContainer4/maxAV.value;
 	GameData.settings.maxaa = $PanelSettings/VBoxContainer/HBoxContainer5/maxAA.value;	
 
+func get_click(data):
+	print(data)
+	var msg = {'cmd':'PRIVMSG','msg':''}
+	if data.context.has('user_id'):
+		msg['user-id'] = data.context['user_id'];
+		var playernode = get_node_or_null("Players/"+data.context['user_id']);
+		if !playernode:
+			msg.msg = '!j'
+			get_message(msg)
+			return
+			
+		if( data.data.type == 'click' && data.data.button == 0):
+			msg.msg= '!m(%s,%s)' % [data.data.position.x,data.data.position.y]			
+		if( data.data.type == 'click' && data.data.button == 2):
+			var dx = data.data.position.x -playernode.position.x
+			var dy = data.data.position.y -playernode.position.y
+			msg.msg= '!_b = [%s,%s]' % [dx,dy]
+	get_message(msg)
+	
 func get_message(data):
 
 	_update_settings_from_ui()
