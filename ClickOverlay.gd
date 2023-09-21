@@ -39,6 +39,7 @@ func onArea2Dinputevent( _viewport, event, _shapeidx ):
 		dialog.visible = true;
 
 func _tic(): 
+	$Second.text = str(  int(Time.get_unix_time_from_system()) % 60 )
 	pass
 			
 
@@ -62,6 +63,10 @@ func _on_data(msg):
 	var data = JSON.parse_string(msg);	
 	if !data:
 		return
+	if( data.has('cmd') && data.cmd == 'ping' ):
+		ws.send_text("{\"cmd\":\"pong\"}");
+		return
+		
 	var pos = Vector2(data.data.position[0],data.data.position[1])
 
 	if(calibrateStatus=="first_point" && data.data.type == 'click' && data.context.role == 'broadcaster'):

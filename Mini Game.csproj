@@ -6,7 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Jint">
-      <Version>3.0.0-beta-2049</Version>
+      <Version>3.0.0-beta-2052</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

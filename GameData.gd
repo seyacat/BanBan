@@ -17,7 +17,7 @@ var settings={
 
 
 func updatePlayerData(data):
-	if data.cmd == 'PRIVMSG' && !players.has(data["user-id"]):
+	if (data.cmd == 'PRIVMSG' || data.cmd == 'WHISPER' ) && !players.has(data["user-id"]):
 		players[data["user-id"]] = {}
 	for i in data:
 		players[data["user-id"]][i] = data[i];

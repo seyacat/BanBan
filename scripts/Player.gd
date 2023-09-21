@@ -5,14 +5,17 @@ var settings = {}
 var cooldown = 50
 var life = 100
 var animation_state = 'idle'
+var is_anonimous
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$AnimationPlayer.connect("animation_finished",_animation_finished)
-	pass # Replace with function body.
+	is_anonimous = !name.is_valid_int();
+	if(is_anonimous):
+		scale = Vector2(0.5,0.5)
 
 func _animation_finished(anim):
 	animation_state = 'idle'
-	if(anim == 'attack'):
+	if(anim == 'attack' || anim =='walk'):
 		$Area2D/CollisionShape2D.disabled = true;
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
@@ -22,10 +25,11 @@ func _physics_process(delta):
 	
 	life =  clamp( life + delta , 0 , 100)
 	cooldown =  clamp( cooldown + 20*delta , 0 , 100)
+	
 	$LabelContainer/Life.value = life
 	$LabelContainer/Cooldown.value = cooldown
 	var vel = $JintMachine.getDoubleArray('_v')
-	if vel.size() == 2 && !is_nan(vel[0]) && !is_nan(vel[1]):
+	if vel && vel.size() == 2 && !is_nan(vel[0]) && !is_nan(vel[1]):
 		var last_position = position
 		if( vel[0] != 0 ):
 			$Sprite2D.flip_h = vel[0]<0;
@@ -34,7 +38,7 @@ func _physics_process(delta):
 		if(last_position != position):
 			animation_state = 'walk'
 	var bvel = $JintMachine.getDoubleArrayAndNulify('_b')
-	if bvel.size() == 2 && cooldown >= 100:
+	if bvel && bvel.size() == 2 && cooldown >= 100 && !is_anonimous:
 		cooldown = 0
 		var max_bvel = 200;
 		var b = bomb.instantiate();
@@ -46,10 +50,10 @@ func _physics_process(delta):
 	
 	var _d = $JintMachine.getDoubleAndNulify('_d')	
 	if !is_nan(_d) && life > 10 :
-		life -= _d/200
+		life -= abs(_d)/200
 		
 	var _h = $JintMachine.getBooleanAndFalse('_h')	
-	if _h && cooldown >=100 :
+	if _h && cooldown >=100 && !is_anonimous :
 		cooldown = 50;
 		$Area2D/CollisionShape2D.disabled = false;
 		animation_state = 'attack'
@@ -68,8 +72,8 @@ func damage(d,player_id):
 	
 		
 func kill():
-	#get_tree().root()$TwitchChatGodot._ban(  )
-	get_node("../../TwitchChatGodot")._ban(GameData.players[name],5,"MUERTO")
+	#ENABLE BAN
+	#get_node("../../TwitchChatGodot")._ban(GameData.players[name],5,"MUERTO")
 	var dp = diePlayer.instantiate()
 	dp.position = position
 	dp.get_node("Sprite2D").flip_h = $Sprite2D.flip_h
@@ -82,5 +86,7 @@ func _process_message_data(data):
 	#$CarSprite2D.modulate = Color.html(data.color) # blue shade
 	if(data.has('username')):
 		$LabelContainer/Label.text = data.username
+	if(GameData.players[name].has('username')):
+		$LabelContainer/Label.text =GameData.players[name].username
 	$JintMachine.ExecMessage(msg)
 

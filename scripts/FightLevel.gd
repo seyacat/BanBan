@@ -40,28 +40,29 @@ func _update_settings_from_ui():
 	GameData.settings.maxaa = $PanelSettings/VBoxContainer/HBoxContainer5/maxAA.value;	
 
 func get_click(data):
-	print(data)
 	var msg = {'cmd':'PRIVMSG','msg':''}
-	if data.context.has('user_id'):
-		msg['user-id'] = data.context['user_id'];
-		var playernode = get_node_or_null("Players/"+data.context['user_id']);
-		if !playernode:
-			msg.msg = '!j'
-			get_message(msg)
-			return
-			
-		if( data.data.type == 'click' && data.data.button == 0):
-			msg.msg= '!m(%s,%s)' % [data.data.position.x,data.data.position.y]			
-		if( data.data.type == 'click' && data.data.button == 2):
-			var dx = data.data.position.x -playernode.position.x
-			var dy = data.data.position.y -playernode.position.y
-			msg.msg= '!_b = [%s,%s]' % [dx,dy]
+	msg['user-id'] = data.context['user_id'] if data.context.has('user_id') else data.context['opaque_user_id']
+	if( data.has('user') && data.user.has('id') ):
+		msg['username'] = data.user.login
+		msg['display_name'] = data.user.display_name
+	var playernode = get_node_or_null("Players/"+msg['user-id']);
+	if !playernode:
+		msg.msg = '!j'
+		get_message(msg)
+		return
+		
+	if( data.data.type == 'click' && data.data.button == 0):
+		msg.msg= '!m(%s,%s)' % [data.data.position.x,data.data.position.y]			
+	if( data.data.type == 'click' && data.data.button == 2):
+		var dx = data.data.position.x -playernode.position.x
+		var dy = data.data.position.y -playernode.position.y
+		msg.msg= '!_b = [%s,%s]' % [dx,dy]
 	get_message(msg)
 	
 func get_message(data):
-
+	print(data)
 	_update_settings_from_ui()
-	if data.has("cmd") && data.cmd == "PRIVMSG":
+	if data.has("cmd") && (data.cmd == "PRIVMSG" || data.cmd == "WHISPER"):
 		#Join alternative
 		data.msg = '!join' if data.msg=="!j" else data.msg
 
@@ -83,7 +84,7 @@ func get_message(data):
 			playernode = playerBase.instantiate()
 			if current_life:
 				playernode.life = current_life
-			playernode.position = $Camera2D.position + Vector2( randf_range(-220,220), randf_range(-250,250) )
+			playernode.position = $Camera2D.position + Vector2( randf_range(-220,220), randf_range(-220,220) )
 			playernode.name = data['user-id']
 			$Players.add_child(playernode)
 			data.msg = '!' #send empty to process message

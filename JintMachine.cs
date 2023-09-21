@@ -7,41 +7,42 @@ using System.Threading.Tasks;
 
 public partial class JintMachine : Node
 {
-	bool running = false;
-	Jint.Engine machine;
-	string context = "{\"test\":\"1\"}";
-	JsArray acel;
-	double lastTic = Time.GetTicksUsec();
+    bool running = false;
+    Jint.Engine machine;
+    string context = "{\"test\":\"1\"}";
+    JsArray acel;
+    double lastTic = Time.GetTicksUsec();
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		machine = new Jint.Engine(options =>
-		{
-			// Limit memory allocations to MB
-			options.LimitMemory(4_000_000);
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
+        machine = new Jint.Engine(options =>
+        {
+            // Limit memory allocations to MB
+            options.LimitMemory(100_000);
 
-			// Set a timeout to 4 seconds.
-			options.TimeoutInterval(TimeSpan.FromSeconds(1));
+            // Set a timeout to 4 seconds.
+            options.TimeoutInterval(TimeSpan.FromSeconds(1));
 
-			// Set limit of 1000 executed statements.
-			options.MaxStatements(1000);
+            // Set limit of 1000 executed statements.
+            options.MaxStatements(100);
 
-			// Use a cancellation token.
-			//options.CancellationToken(cancellationToken);
-		});
-		JsValue[] zero = new JsValue[] { 0, 0 };
-		machine.SetValue("log", new Action<string>((x) => GD.Print(x)));
-		machine.SetValue("_p", GetParent<Node2D>().Position);
-		machine.SetValue("_v", "");
-		machine.SetValue("_b", "");
-		machine.SetValue("_d", "");
-		machine.SetValue("_h", false);
-		machine.SetValue("update", "");
-		try
-		{
-			machine.Execute(
-				@"
+            // Use a cancellation token.
+            options.LimitRecursion(10);
+        });
+        JsValue[] zero = new JsValue[] { 0, 0 };
+        machine.SetValue("log", new Action<string>((x) => GD.Print(x)));
+        machine.SetValue("_p", GetParent<Node2D>().Position);
+        machine.SetValue("_v", "");
+        machine.SetValue("_b", "");
+        machine.SetValue("_d", "");
+        machine.SetValue("_h", false);
+        machine.SetValue("update", "");
+        machine.SetValue("test", "");
+        try
+        {
+            machine.Execute(
+                @"
 			const global = this;
 			let _timelapse_data
 			const _timelapse = (data)=>{
@@ -61,8 +62,10 @@ public partial class JintMachine : Node
 			const m = (x,y)=>{
 				_p = [x,y]
 				update = (context)=>{
-					if( _p[0]-context.position[0] == 0 && _p[1]-context.position[1] == 0 ){
+					if( Math.abs(_p[0]-context.position[0]) < 0.4 && Math.abs(_p[1]-context.position[1]) < 0.4 ){
+						global._v = [0,0]
 						update = null
+						return
 					}
 					global._v = [ _p[0]-context.position[0],_p[1]-context.position[1] ]
 				}
@@ -84,143 +87,145 @@ public partial class JintMachine : Node
 			}
 
 			"
-			);
-		}
-		catch (Exception e)
-		{
-			GD.Print(e);
-		}
-	}
+            );
+        }
+        catch (Exception e)
+        {
+            GD.Print(e);
+        }
+    }
 
-	public override async void _Process(double delta)
-	{
-		AsyncFunction(nameof(_Process));
-	}
+    public override async void _Process(double delta)
+    {
+        AsyncFunction(nameof(_Process));
+    }
 
-	private async Task AsyncFunction(string from)
-	{
-		if (running)
-		{
-			return;
-		}
-		try
-		{
-			running = true;
-			//await Task.Delay(2000);
-			double startTic = Time.GetTicksUsec();
-			Node2D me = GetParent<Node2D>();
-			Node2D players = GetParent<Node2D>().GetParent<Node2D>();
-			List<object> positions = new List<object> { };
-			foreach (Node2D p in players.GetChildren())
-			{
-				if (p.Name != me.Name)
-				{
-					positions.Add(new { position = p.Position, id = p.Name });
-				}
-			}
-			machine.SetValue(
-				"context",
-				new
-				{
-					delta = (startTic - lastTic) / 1000,
-					position = GetParent<Node2D>().Position,
-					enemies = positions.ToArray()
-				}
-			);
-			//TRY CATCH THIS
-			try
-			{
-				machine.Execute(
-					@"
+    private async Task AsyncFunction(string from)
+    {
+        if (running)
+        {
+            return;
+        }
+        //GD.Print("run");
+        running = true;
+        try
+        {
+            //await Task.Delay(2000);
+            double startTic = Time.GetTicksUsec();
+            Node2D me = GetParent<Node2D>();
+            Node2D players = GetParent<Node2D>().GetParent<Node2D>();
+            List<object> positions = new List<object> { };
+            foreach (Node2D p in players.GetChildren())
+            {
+                if (p.Name != me.Name)
+                {
+                    positions.Add(new { position = p.Position, id = p.Name });
+                }
+            }
+            machine.SetValue(
+                "context",
+                new
+                {
+                    delta = (startTic - lastTic) / 1000,
+                    position = GetParent<Node2D>().Position,
+                    enemies = positions.ToArray()
+                }
+            );
+
+            machine.Execute(
+                @"
 				if( typeof update === 'function' ){
-						update(context);
+						const ret = update(context);
 						global._d = context.delta
 					}
 				"
-				);
-			}
-			catch (System.Exception) { }
+            );
 
-			lastTic = startTic;
-		}
-		catch (Exception e)
-		{
-			GD.Print(e);
-		}
-		//machine.GetValue
-		running = false;
-	}
+            lastTic = startTic;
+        }
+        catch (Exception e)
+        {
+            GD.Print(e);
+            machine.Execute(
+                @"
+				update = null
+				"
+            );
+        }
+        //machine.GetValue
+        running = false;
+    }
 
-	public Godot.Collections.Array<double> getDoubleArray(String name)
-	{
-		Jint.Native.JsValue jsOb = machine.GetValue(name);
-		Godot.Collections.Array<double> ret = new Godot.Collections.Array<double>();
-		if (jsOb.IsObject())
-		{
-			foreach (JsValue v in jsOb.AsArray())
-			{
-				if (v.AsNumber() == double.NaN)
-				{
-					return ret;
-				}
-				ret.Add(v.AsNumber());
-			}
-		}
-		return ret;
-	}
+    public Godot.Collections.Array<double> getDoubleArray(String name)
+    {
+        Jint.Native.JsValue jsOb = machine.GetValue(name);
+        Godot.Collections.Array<double> ret = new Godot.Collections.Array<double>();
+        if (jsOb.IsObject())
+        {
+            foreach (JsValue v in jsOb.AsArray())
+            {
+                if (v.AsNumber() == double.NaN)
+                {
+                    return ret;
+                }
+                ret.Add(v.AsNumber());
+            }
+        }
+        return ret;
+    }
 
-	public Godot.Collections.Array<double> getDoubleArrayAndNulify(String name)
-	{
-		Godot.Collections.Array<double> ret = getDoubleArray(name);
-		machine.SetValue(name, "");
-		machine.Execute(name + "= null");
+    public Godot.Collections.Array<double> getDoubleArrayAndNulify(String name)
+    {
+        Godot.Collections.Array<double> ret = getDoubleArray(name);
+        machine.SetValue(name, "");
+        machine.Execute(name + "= null");
 
-		return ret;
-	}
+        return ret;
+    }
 
-	public double getDouble(String name)
-	{
-		Jint.Native.JsValue jsOb = machine.GetValue(name);
-		if (jsOb.IsNumber())
-		{
-			return jsOb.AsNumber();
-		}
-		return Double.NaN;
-	}
+    public double getDouble(String name)
+    {
+        Jint.Native.JsValue jsOb = machine.GetValue(name);
+        if (jsOb.IsNumber())
+        {
+            return jsOb.AsNumber();
+        }
+        return Double.NaN;
+    }
 
-	public double getDoubleAndNulify(String name)
-	{
-		Jint.Native.JsValue jsOb = machine.GetValue(name);
-		if (jsOb.IsNumber())
-		{
-			double ret = jsOb.AsNumber();
-			machine.SetValue(name, "");
-			return ret;
-		}
-		return Double.NaN;
-	}
+    public double getDoubleAndNulify(String name)
+    {
+        Jint.Native.JsValue jsOb = machine.GetValue(name);
+        if (jsOb.IsNumber())
+        {
+            double ret = jsOb.AsNumber();
+            machine.SetValue(name, "");
+            return ret;
+        }
+        return Double.NaN;
+    }
 
-	public Boolean getBooleanAndFalse(String name)
-	{
-		Jint.Native.JsValue jsOb = machine.GetValue(name);
-		if (jsOb.IsBoolean())
-		{
-			Boolean ret = jsOb.AsBoolean();
-			machine.SetValue(name, false);
-			return ret;
-		}
-		return false;
-	}
+    public Boolean getBooleanAndFalse(String name)
+    {
+        Jint.Native.JsValue jsOb = machine.GetValue(name);
+        if (jsOb.IsBoolean())
+        {
+            Boolean ret = jsOb.AsBoolean();
+            machine.SetValue(name, false);
+            return ret;
+        }
+        return false;
+    }
 
-	public async void ExecMessage(string msg)
-	{
-		try
-		{
-			machine.Execute(msg);
-		}
-		catch (Exception e)
-		{
-			GD.Print(e);
-		}
-	}
+    public async void ExecMessage(string msg)
+    {
+        try
+        {
+            machine.Execute(msg);
+        }
+        catch (Exception e)
+        {
+            GD.Print(e);
+        }
+    }
 }

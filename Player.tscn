@@ -107,6 +107,7 @@ _data = {
 radius = 43.0116
 
 [node name="Player" type="CharacterBody2D"]
+z_index = 10
 script = ExtResource("1_7mosh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
