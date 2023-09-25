@@ -75,7 +75,8 @@ func get_message(data):
 			current_life = playernode.life
 			playernode.name = playernode.name + "_"
 			$Players.remove_child(playernode)
-			playernode.queue_free()
+			#playernode.queue_free()
+			playernode.queue_free_all(playernode)
 			playernode = null
 			data.msg = "!join"
 		

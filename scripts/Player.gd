@@ -78,7 +78,8 @@ func kill():
 	dp.position = position
 	dp.get_node("Sprite2D").flip_h = $Sprite2D.flip_h
 	get_parent().add_child(dp)
-	queue_free()
+	#queue_free()
+	queue_free_all(self)
 	
 	
 func _process_message_data(data):
@@ -90,3 +91,12 @@ func _process_message_data(data):
 		$LabelContainer/Label.text =GameData.players[name].username
 	$JintMachine.ExecMessage(msg)
 
+func queue_free_all(node):
+	for N in node.get_children():
+		if N.get_child_count() > 0:
+			#print("["+N.get_name()+"]")
+			queue_free_all(N)
+		#else:
+			# Do something
+			#print("- "+N.get_name())
+	node.queue_free()

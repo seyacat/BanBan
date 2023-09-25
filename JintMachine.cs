@@ -11,6 +11,7 @@ public partial class JintMachine : Node
 	Jint.Engine machine;
 	string context = "{\"test\":\"1\"}";
 	JsArray acel;
+	double startTic = Time.GetTicksUsec();
 	double lastTic = Time.GetTicksUsec();
 	Esprima.Ast.Script runUpdate;
 
@@ -20,15 +21,15 @@ public partial class JintMachine : Node
 		runUpdate = new Esprima.JavaScriptParser().ParseScript(
 			@"
 				if( typeof update === 'function' ){
-						const ret = update(context);
-						global._d = context.delta
+						const ret = update();
+						global._d = getDelta()
 					}
 				"
 		);
 		machine = new Jint.Engine(options =>
 		{
 			// Limit memory allocations to MB
-			options.LimitMemory(100_000);
+			options.LimitMemory(60_000);
 
 			// Set a timeout to 4 seconds.
 			options.TimeoutInterval(TimeSpan.FromSeconds(1));
@@ -43,6 +44,14 @@ public partial class JintMachine : Node
 		});
 		JsValue[] zero = new JsValue[] { 0, 0 };
 		machine.SetValue("log", new Action<string>((x) => GD.Print(x)));
+		machine.SetValue("getDelta", GetDelta);
+		machine.SetValue("getPosition", GetPosition);
+		machine.SetValue("getEnemies", GetEnemies);
+		machine.SetValue("getEnemyCount", GetEnemyCount);
+		machine.SetValue("getEnemy", GetEnemy);
+		machine.SetValue("getBombs", GetBombs);
+		machine.SetValue("getBombCount", GetBombCount);
+		machine.SetValue("getBomb", GetBomb);
 		machine.SetValue("_p", GetParent<Node2D>().Position);
 		machine.SetValue("_v", "");
 		machine.SetValue("_b", "");
@@ -55,30 +64,17 @@ public partial class JintMachine : Node
 			machine.Execute(
 				@"
 			const global = this;
-			let _timelapse_data
-			const _timelapse = (data)=>{
-				_timelapse_data = data
-				update = (context)=>{
-					if( _timelapse_data.length ){
-						_timelapse_data[0][2] = (_timelapse_data[0]?.[2] ?? 1000) - context.delta
-						if( _timelapse_data[0][2] <= 0 ){
-							action = _timelapse_data.shift()
-							this[action[0]] = action[1]
-						}
-					}else{
-						update = null
-					}
-				}
-			}
+			
 			const m = (x,y)=>{
 				_p = [x,y]
 				update = (context)=>{
-					if( Math.abs(_p[0]-context.position[0]) < 0.4 && Math.abs(_p[1]-context.position[1]) < 0.4 ){
+					const position = getPosition()
+					if( Math.abs(_p[0]-position[0]) < 0.4 && Math.abs(_p[1]-position[1]) < 0.4 ){
 						global._v = [0,0]
 						update = null
 						return
 					}
-					global._v = [ _p[0]-context.position[0],_p[1]-context.position[1] ]
+					global._v = [ _p[0]-position[0],_p[1]-position[1] ]
 				}
 			}
 			const b = (angle,vel)=>{
@@ -106,10 +102,107 @@ public partial class JintMachine : Node
 		}
 	}
 
+	double GetDelta()
+	{
+		return (startTic - lastTic) / 1000;
+	}
+
+	Godot.Vector2 GetPosition()
+	{
+		return GetParent<Node2D>().Position;
+	}
+
+	object[] GetEnemies()
+	{
+		Node2D players = GetParent<Node2D>().GetParent<Node2D>();
+		Node2D me = GetParent<Node2D>();
+		List<object> positions = new List<object> { };
+		foreach (Node2D p in players.GetChildren())
+		{
+			if (p.Name != me.Name)
+			{
+				positions.Add(new { position = p.Position, id = p.Name });
+			}
+		}
+		return positions.ToArray();
+	}
+
+	int GetEnemyCount()
+	{
+		Node2D players = GetParent<Node2D>().GetParent<Node2D>();
+		return players.GetChildCount() - 1;
+	}
+
+	object GetEnemy(int index)
+	{
+		Node2D players = GetParent<Node2D>().GetParent<Node2D>();
+		Node2D me = GetParent<Node2D>();
+		List<object> positions = new List<object> { };
+		int c = 0;
+		foreach (Node2D p in players.GetChildren())
+		{
+			if (p.Name != me.Name)
+			{
+				if (c == index)
+				{
+					return new { position = p.Position, id = p.Name };
+				}
+				c++;
+			}
+		}
+		return null;
+	}
+
+	object[] GetBombs()
+	{
+		Node2D bombs = GetParent<Node2D>()
+			.GetParent<Node2D>()
+			.GetParent<Node2D>()
+			.GetNode<Node2D>("Bombs");
+		//Node2D me = GetParent<Node2D>();
+		List<object> positions = new List<object> { };
+		foreach (Node2D b in bombs.GetChildren())
+		{
+			positions.Add(new { position = b.Position });
+		}
+		return positions.ToArray();
+	}
+
+	int GetBombCount()
+	{
+		Node2D bombs = GetParent<Node2D>()
+			.GetParent<Node2D>()
+			.GetParent<Node2D>()
+			.GetNode<Node2D>("Bombs");
+		return bombs.GetChildCount();
+	}
+
+	object GetBomb(int index)
+	{
+		Node2D bombs = GetParent<Node2D>()
+			.GetParent<Node2D>()
+			.GetParent<Node2D>()
+			.GetNode<Node2D>("Bombs");
+		List<object> positions = new List<object> { };
+		Node2D b = bombs.GetChild<Node2D>(index);
+		if (b != null)
+		{
+			return new { position = b.Position };
+		}
+		return null;
+	}
+
 	public override async void _Process(double delta)
 	{
 		AsyncFunction(nameof(_Process));
 	}
+
+	/*public override void _ExitTree()
+	{
+		GD.Print("KILL JINT");
+		machine.Dispose();
+		base._ExitTree();
+	}*/
 
 	private async Task AsyncFunction(string from)
 	{
@@ -122,29 +215,9 @@ public partial class JintMachine : Node
 		try
 		{
 			//await Task.Delay(2000);
-			double startTic = Time.GetTicksUsec();
-			Node2D me = GetParent<Node2D>();
-			Node2D players = GetParent<Node2D>().GetParent<Node2D>();
-			List<object> positions = new List<object> { };
-			foreach (Node2D p in players.GetChildren())
-			{
-				if (p.Name != me.Name)
-				{
-					positions.Add(new { position = p.Position, id = p.Name });
-				}
-			}
-			machine.SetValue(
-				"context",
-				new
-				{
-					delta = (startTic - lastTic) / 1000,
-					position = GetParent<Node2D>().Position,
-					enemies = positions.ToArray()
-				}
-			);
-
+			startTic = Time.GetTicksUsec();
+			//machine.SetValue("context", new { delta = (startTic - lastTic) / 1000, });
 			machine.Execute(runUpdate);
-
 			lastTic = startTic;
 		}
 		catch (Exception e)
@@ -181,9 +254,11 @@ public partial class JintMachine : Node
 	public Godot.Collections.Array<double> getDoubleArrayAndNulify(String name)
 	{
 		Godot.Collections.Array<double> ret = getDoubleArray(name);
-		machine.SetValue(name, "");
-		machine.Execute(name + "= null");
-
+		if (ret.Count != 0)
+		{
+			machine.SetValue(name, "");
+			machine.Execute(name + "= null");
+		}
 		return ret;
 	}
 
@@ -215,7 +290,10 @@ public partial class JintMachine : Node
 		if (jsOb.IsBoolean())
 		{
 			Boolean ret = jsOb.AsBoolean();
-			machine.SetValue(name, false);
+			if (ret)
+			{
+				machine.SetValue(name, false);
+			}
 			return ret;
 		}
 		return false;
