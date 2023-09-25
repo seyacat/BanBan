@@ -8,4 +8,3 @@ func _ready():
 
 func destroy(_event):
 	queue_free()
-# Called every frame. 'delta' is the elapsed time since the previous frame.
