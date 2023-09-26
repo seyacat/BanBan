@@ -56,7 +56,7 @@ Ejem: [{position:[0,0]}]
 getBombCount() : Devuelve el numero de bombas
 Ejem: 8
 
-GetBomb(index) : Devuelve la bomba con index como parametro
+getBomb(index) : Devuelve la bomba con index como parametro
 Ejem: {position:[0,0]}
 
 
