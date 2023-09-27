@@ -40,7 +40,7 @@ func _update_settings_from_ui():
 	GameData.settings.maxaa = $PanelSettings/VBoxContainer/HBoxContainer5/maxAA.value;	
 
 func get_click(data):
-	var msg = {'cmd':'PRIVMSG','msg':''}
+		var msg = {'cmd':'PRIVMSG','msg':''}
 	msg['user-id'] = data.context['user_id'] if data.context.has('user_id') else data.context['opaque_user_id']
 	if( data.has('user') && data.user.has('id') ):
 		msg['username'] = data.user.login
@@ -50,7 +50,9 @@ func get_click(data):
 		msg.msg = '!j'
 		get_message(msg)
 		return
-		
+	#mousedown,mouseup,click,touchstart,touchend
+	if( data.data.type == 'mouseup' || data.data.type == 'touchend'):
+		msg.msg= '!h'	
 	if( data.data.type == 'click' && data.data.button == 0):
 		msg.msg= '!m(%s,%s)' % [data.data.position.x,data.data.position.y]			
 	if( data.data.type == 'click' && data.data.button == 2):
@@ -60,7 +62,6 @@ func get_click(data):
 	get_message(msg)
 	
 func get_message(data):
-	print(data)
 	_update_settings_from_ui()
 	if data.has("cmd") && (data.cmd == "PRIVMSG" || data.cmd == "WHISPER"):
 		#Join alternative
@@ -75,8 +76,7 @@ func get_message(data):
 			current_life = playernode.life
 			playernode.name = playernode.name + "_"
 			$Players.remove_child(playernode)
-			#playernode.queue_free()
-			playernode.queue_free_all(playernode)
+			playernode.queue_free()
 			playernode = null
 			data.msg = "!join"
 		

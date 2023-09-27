@@ -9,13 +9,18 @@ var is_anonimous
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$AnimationPlayer.connect("animation_finished",_animation_finished)
+	$AnimationPlayer.connect("animation_started",_animation_started)
 	is_anonimous = !name.is_valid_int();
 	if(is_anonimous):
 		scale = Vector2(0.5,0.5)
 
+func _animation_started(anim):
+	if( anim != 'attack' ):
+		$Area2D/CollisionShape2D.disabled = true;
+
 func _animation_finished(anim):
 	animation_state = 'idle'
-	if(anim == 'attack' || anim =='walk'):
+	if(anim == 'attack'):
 		$Area2D/CollisionShape2D.disabled = true;
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
@@ -78,9 +83,7 @@ func kill():
 	dp.position = position
 	dp.get_node("Sprite2D").flip_h = $Sprite2D.flip_h
 	get_parent().add_child(dp)
-	#queue_free()
-	queue_free_all(self)
-	
+	queue_free()	
 	
 func _process_message_data(data):
 	var msg = data.msg.right( data.msg.length()-1 ) 
@@ -90,13 +93,3 @@ func _process_message_data(data):
 	if(GameData.players[name].has('username')):
 		$LabelContainer/Label.text =GameData.players[name].username
 	$JintMachine.ExecMessage(msg)
-
-func queue_free_all(node):
-	for N in node.get_children():
-		if N.get_child_count() > 0:
-			#print("["+N.get_name()+"]")
-			queue_free_all(N)
-		#else:
-			# Do something
-			#print("- "+N.get_name())
-	node.queue_free()

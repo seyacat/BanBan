@@ -59,8 +59,8 @@ func _connected(proto = ""):
 	
 func _on_data(msg):
 	if(typeof(msg) != TYPE_STRING):
-		return	
-	var data = JSON.parse_string(msg);	
+		return
+	var data = JSON.parse_string(msg);
 	if !data:
 		return
 	if( data.has('cmd') && data.cmd == 'ping' ):
